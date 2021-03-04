@@ -1,0 +1,74 @@
+<odoo>
+        <template id="index">
+            <title>Aspire360Measures</title>
+            <t t-call="website.layout">
+                <t t-set="title">Aspire360Measures</t>
+                <div class="oe_structure">
+                    <div class="container">
+                        <h1>Home Dashboard</h1>
+                        <p><a t-attf-href="/aspire360measures/survey/fundraise">
+                            Take the Readiness to Fundraise Survey</a>
+                        </p>
+                        <p><a t-attf-href="/aspire360measures/survey/sell">
+                            Take the Readiness to Sell Survey</a>
+                        </p>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- <template id="biography">
+            <t t-call="website.layout">
+                <t t-set="title">Academy</t>
+                <div class="oe_structure"/>
+                <div class="oe_structure">
+                    <div class="container">
+                        <h3 t-field="person.name"/>
+                        <p>Last modified: <i t-field="person.write_date" t-options='{"widget": "relative"}'/></p>
+                        <div t-field="person.biography"/>
+                        <div class="col-md-7 col-sm-8">
+                            <p> Question 1... Filling in input text </p>
+                            <input type="text" class="form-control o_website_form_input" name="x_surname" required=""/>
+                            <p> Question 2... How do you feel about developing in Odoo? </p>
+                            <form>
+                                <input type="radio" id="button-1" name="gender" value="male"/>
+                                <label for="button-1">1 - Hate it</label>
+                                <input type="radio" id="button-2" name="gender" value="female"/>
+                                <label for="button-2">2</label>
+                                <input type="radio" id="button-3" name="gender" value="other"/>
+                                <label for="button-3">3 - Eh</label>
+                                <input type="radio" id="button-4" name="gender" value="female"/>
+                                <label for="button-4">4</label>
+                                <input type="radio" id="button-5" name="gender" value="other"/>
+                                <label for="button-5">5 - Love it</label>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure"/>
+            </t>
+        </template> -->
+
+    <data>
+<!--
+        <template id="listing">
+          <ul>
+            <li t-foreach="objects" t-as="object">
+              <a t-attf-href="#{ root }/objects/#{ object.id }">
+                <t t-esc="object.display_name"/>
+              </a>
+            </li>
+          </ul>
+        </template>
+        <template id="object">
+          <h1><t t-esc="object.display_name"/></h1>
+          <dl>
+            <t t-foreach="object._fields" t-as="field">
+              <dt><t t-esc="field"/></dt>
+              <dd><t t-esc="object[field]"/></dd>
+            </t>
+          </dl>
+        </template>
+-->
+    </data>
+</odoo>
