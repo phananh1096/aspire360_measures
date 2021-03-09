@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_aspire360_measures_aspire360_measures,aspire360_measures.aspire360_measures,model_aspire360_measures_aspire360_measures,base.group_user,1,1,1,1
+access_aspire360_entrepreneurs,access_aspire360_entrepreneurs,model_aspire360_entrepreneurs,,1,1,1,1
+access_aspire360_venturecapitalists,access_aspire360_venturecapitalists,model_aspire360_venturecapitalists,,1,1,1,1

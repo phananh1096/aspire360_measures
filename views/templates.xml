@@ -1,5 +1,5 @@
 <odoo>
-        <template id="index">
+        <template id="e_index">
             <title>Aspire360Measures</title>
             <t t-call="website.layout">
                 <t t-set="title">Aspire360Measures</t>
@@ -11,6 +11,40 @@
                         </p>
                         <p><a t-attf-href="/aspire360measures/survey/sell">
                             Take the Readiness to Sell Survey</a>
+                        </p>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="v_index">
+            <title>Aspire360Measures</title>
+            <t t-call="website.layout">
+                <t t-set="title">Aspire360Measures</t>
+                <div class="oe_structure">
+                    <div class="container">
+                        <h1>Investor Homepage</h1>
+                        <p>
+                            TO BE UPDATED
+                        </p>
+                    </div>
+                </div>
+            </t>
+        </template>
+            
+        
+        <template id="setup">
+            <title>Aspire360Measures</title>
+            <t t-call="website.layout">
+                <t t-set="title">Aspire360Measures</t>
+                <div class="oe_structure">
+                    <div class="container">
+                        <h1>Are you an Entrepreneur or an Investor?</h1>
+                        <p><a t-attf-href="/aspire360measures/setup/e">
+                            Entrepreneur/CEO</a>
+                        </p>
+                        <p><a t-attf-href="/aspire360measures/setup/v">
+                            Investor</a>
                         </p>
                     </div>
                 </div>
@@ -50,6 +84,7 @@
         </template> -->
 
     <data>
+        <!-- <function model="geo_subdivision.geo_subdivision" name="myfunction"/>  -->
 <!--
         <template id="listing">
           <ul>

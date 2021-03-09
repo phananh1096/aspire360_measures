@@ -3,8 +3,7 @@
     'name': "Aspire360Measures",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Aspire360 is a way to assess early startups and startup founders in an unbiased and consistent way.""",
 
     'description': """
         Long description of module's purpose
@@ -20,11 +19,11 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base', 'survey'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
     ],
