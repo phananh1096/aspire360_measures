@@ -7,8 +7,8 @@ class Aspire360(http.Controller):
     def index(self, **kw):
         # entrepreneurs = http.request.env['aspire360.entrepreneurs']
         # venture_capitalists = http.request.env['aspire360.venturecapitalists']
-        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', 100)])
-        venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', 1000)])
+        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
+        venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get ('uid'))])
         print("Entrepreneurs: ", entrepreneurs)
         print("Entrepreneurs: ", venture_capitalists)
         print("User uid: ", request.env.user)
