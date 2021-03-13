@@ -16,12 +16,12 @@ class Academy(http.Controller):
         print("User uid: ", request.env.context.get ('uid'))
         print("Context: ", http.request.env['ir.config_parameter'].sudo().get_param('web.base.url'))
         # If user doesn't exist in either, redirect to create page to get them to get them to decide whether entrepreneur or vc
-        if len(entrepreneurs) == 0 and len(venture_capitalists) == 0:
+        '''if len(entrepreneurs) == 0 and len(venture_capitalists) == 0:
             return http.request.redirect('/aspire360measures/setup')
-        elif len(venture_capitalists) > 0:
-            return http.request.render('aspire360_measures.v_index')
-        else:
-            return http.request.render('aspire360_measures.e_index')
+        elif len(venture_capitalists) > 0:'''
+        return http.request.render('aspire360_measures.v_index')
+        '''else:
+            return http.request.render('aspire360_measures.e_index')'''
         # print("User uid: ", self.env.user.name)
         #TODO: Apply filter to check based on id?
         # Validation: Check if user id exists within tables. If not, redirect to setup.
