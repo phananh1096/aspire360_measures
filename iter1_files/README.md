@@ -60,21 +60,13 @@
 - Once Odoo has been installed, TAs may visit localhost:8069/web/login and login with the provided credentials to access the Odoo account. 
 - Navigate to the top left corner and click on the symbol shown below:
 
-    ![TDD tests](iter1_files/odoo_homepage.png "TDD tests")
+    ![TDD tests](/iter1/odoo_homepage.png "TDD tests")
 
-- Click on the Apps option:
+- Click on the Apps option
 
-    ![TDD tests](iter1_files/odoo_apps.png "TDD tests")
+    ![TDD tests](/iter1/odoo_apps.png "TDD tests")
 
-- Search for "Aspire360Measures" in the searchbox: 
-
-    ![TDD tests](iter1_files/odoo_search.png "TDD tests")
-
-- Install our module: 
-
-    ![TDD tests](iter1_files/aspire360_install.png "TDD tests")
-
-- Navigate to: localhost:8069/aspire360measures/ to land on the homepage of our application.
+- Search for "Aspire360Measures
 
 ## Testing
 
@@ -116,11 +108,11 @@
 ## Testing results
 + Cucumber/Behave
 
-    ![TDD tests](iter1_files/aspire360_measures_bdd.jpg "TDD tests")
+    ![TDD tests](/iter1/aspire360_measures_bdd.jpg "TDD tests")
 
 + Unit tests
 
-    ![TDD tests](iter1_files/aspire360_measures_tdd.png "TDD tests")
+    ![TDD tests](/iter1/aspire360_measures_tdd.png "TDD tests")
 
 
 ## Project code:
