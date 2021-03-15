@@ -51,6 +51,7 @@ class Aspire360(http.Controller):
             venture_capitalists.create(new_record)
         return http.request.redirect('/aspire360measures')
     
+
     @http.route('/aspire360measures/setup/e', auth='public',website=True)
     def setup_v(self, **kw):
         #Security measure to prevent someone from signing up twice
@@ -81,6 +82,7 @@ class Aspire360(http.Controller):
             user_session.update_entrepreneur(user_session.access_token, request.env.context.get ('uid'))
             end_url = user_session.get_start_url()
             # print("Updated record, now to test if it is actually stored")
+            # # Test
         # #Check to see if record is updated:
         # updated_records = http.request.env['survey.user_input'].search([('aspire_entrepreneur', '=', request.env.context.get ('uid'))])
         # for record in updated_records:
