@@ -22,3 +22,10 @@ Feature: setting up a new entrepreneur
       When we go to surveys
       Then we go to fundraising survey
       Then we pass the survey
+
+  Scenario: entrepreneur tries to take wrong survey
+      Given we are on the home page
+      When we go to surveys
+      Then we go to fundraising survey
+      Then we don't see the survey
+    

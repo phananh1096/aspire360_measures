@@ -112,3 +112,7 @@ def step_impl(context):
     python_button.send_keys(Keys.ENTER)
     #python_button.click()
     assert True
+
+@then('we don\'t see the survey')
+def step_impl(context):
+    assert "Readiness to Fundraise Survey" not in driver.page_source
