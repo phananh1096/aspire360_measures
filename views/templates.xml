@@ -5,9 +5,17 @@
                 <t t-set="title">Aspire360Measures</t>
                 <div class="oe_structure">
                     <div class="container">
-                        <h1>Home Dashboard</h1>
+                        <p>
+                        Welcome <t t-esc="e_name"/> !
+                        </p>
+                        <p>
+                        Welcome to your Aspire360 dashboard! Here, you'll access key assessments to gauge the readiness state of your startup.
+                        </p>
+                        <p>
+                        Please complete the following two assessments. Select one to get started:
+                        </p>
                         <p><a t-attf-href="/aspire360measures/survey/fundraise">
-                            Take the Readiness to Fundraise Survey</a>
+                            Take the Readiness to Fundraise Survey</a> - <t t-esc="status"/> - Score - <t t-esc="score"/> - Taken on : <t t-esc="date"/>
                         </p>
                         <p><a t-attf-href="/aspire360measures/survey/sell">
                             Take the Readiness to Sell Survey</a>

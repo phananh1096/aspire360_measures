@@ -9,19 +9,28 @@ class Aspire360(http.Controller):
         # venture_capitalists = http.request.env['aspire360.venturecapitalists']
         entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
         venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get ('uid'))])
-        print("Entrepreneurs: ", entrepreneurs)
-        print("Entrepreneurs: ", venture_capitalists)
+        print("Entrepreneurs: ", entrepreneurs.name)
+        print("Venture capitalists: ", venture_capitalists)
         print("User uid: ", request.env.user)
         print("User uid: ",request.env.context)
         print("User uid: ", request.env.context.get ('uid'))
         print("Context: ", http.request.env['ir.config_parameter'].sudo().get_param('web.base.url'))
         # If user doesn't exist in either, redirect to create page to get them to get them to decide whether entrepreneur or vc
         if len(entrepreneurs) == 0 and len(venture_capitalists) == 0:
+            print('Making changes')
             return http.request.redirect('/aspire360measures/setup')
         elif len(venture_capitalists) > 0:
             return http.request.render('aspire360_measures.v_index')
         else:
-            return http.request.render('aspire360_measures.e_index')
+            print('Entering entrepreneur view')
+            survey_status = http.request.env['survey.user_input'].search([('survey_id', '=', 5)])
+            print(survey_status)
+            survey_done = survey_status[0].state
+            print(survey_done)
+            survey_score = survey_status[0].scoring_percentage
+            print(survey_score)
+            survey_date = survey_status[0].start_datetime
+            return http.request.render('aspire360_measures.e_index', {'e_name':entrepreneurs.name, 'status':survey_done, 'score':survey_score, 'date': survey_date})
         # print("User uid: ", self.env.user.name)
         #TODO: Apply filter to check based on id?
         # Validation: Check if user id exists within tables. If not, redirect to setup.
