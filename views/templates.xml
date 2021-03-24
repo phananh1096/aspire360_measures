@@ -143,17 +143,49 @@
                 <div class="oe_structure"/>
                 <div class="oe_structure">
                     <div class="container">
-                        <p t-foreach="companies" t-as="company">
-                            <t t-esc = "company.name" /> 
-                            <t t-esc = "company.user_id" /> 
-                            <t t-esc = "company.company_name" /> 
-                            <a t-attf-href="/aspire360measures/survey/fundraise">
-                                View latest Readiness to Fundraise Assessment results
-                            </a>
-                            <a t-attf-href="/aspire360measures/survey/sell">
-                                View latest Readiness to Sell Assessment results
-                            </a>
-                        </p>
+                        <!-- <div>
+                            <form role="form" action="/aspire360measures">
+                                <button type="submit" class="btn btn-primary pull-left clearfix oe_login_buttons">Back</button>
+                            </form>
+                        </div>
+                        <br/>
+                        <br/> -->
+                        <br/>
+                        <div>
+                            <h1>Search Results</h1>
+                        </div>
+                        <div t-foreach="companies" t-as="company" class="alert alert-info mt16">
+                            <form role="form" action="/aspire360measures/display_fundraise#entrepreneur=%s(company.company_name)">
+                                <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Fundraising Results</button>
+                                <p>
+                                    <h2 t-esc = "company.company_name" /> 
+                                </p>
+                                <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Sell Results</button>
+                                <p>
+                                    <a>Founder: </a>
+                                    <a t-esc = "company.name" /> 
+                                </p>
+                                <p>
+                                    <a>Industry: </a>
+                                    <a t-esc = "company.company_industry" /> 
+                                </p>
+                                <p>
+                                    <a>Funding: </a>
+                                    <a t-esc = "company.company_funding" /> 
+                                </p>
+                                <p>
+                                    <a>Size: </a>
+                                    <a t-esc = "company.company_size" /> 
+                                </p>
+                                <!-- <t t-esc = "company.name" /> 
+                                <t t-esc = "company.user_id" />  -->
+                                <!-- <div class="clearfix oe_login_buttons"> -->
+
+                                <!-- </div> -->
+                            </form>
+                            <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
+                            <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p>
+                        </div>
                         <!-- <h3 t-field="person.name"/>
                         <p>Last modified: <i t-field="person.write_date" t-options='{"widget": "relative"}'/></p>
                         <div t-field="person.biography"/>

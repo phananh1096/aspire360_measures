@@ -127,7 +127,16 @@ class Aspire360(http.Controller):
     def search(self, **kw):
         print("Params are: {}".format(kw))
         #TODO: UPDATE SEARCH FUNCTION BASED ON PARAMS
-        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([])
+        params = list()
+        if "company_name" in kw and kw["company_name"] != "":
+            params.append(("company_name","=",kw["company_name"]))
+        if "company_industry" in kw and kw["company_industry"] != "All":
+            params.append(("company_industry","=",kw["company_industry"]))
+        if "company_size" in kw and kw["company_size"] != "All":
+            params.append(("company_size","=",kw["company_size"]))
+        if "company_funding" in kw and kw["company_funding"] != "All":
+            params.append(("company_funding","=",kw["company_funding"]))
+        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search(params)
         print("Num entries: ", len(entrepreneurs))
         return http.request.render('aspire360_measures.search',{
             'companies': entrepreneurs
