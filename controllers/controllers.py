@@ -79,7 +79,7 @@ class Aspire360(http.Controller):
             # print("Generated Access token is: ", user_session.get_start_url())
             # print("Updating survey: ", user_session.survey_id)
             # print(" with user_id: ", request.env.context.get ('uid'))
-            user_session.update_entrepreneur(user_session.access_token, request.env.context.get ('uid'))
+            user_session.update_entrepreneur(user_session.access_token, request.env.context.get ('uid'), "fundraise")
             end_url = user_session.get_start_url()
             # print("Updated record, now to test if it is actually stored")
             # # Test
@@ -102,7 +102,7 @@ class Aspire360(http.Controller):
             print("Generated Access token is: ", user_session.access_token)
             # print("Generated Answer token is: ", user_session.answer_token)
             # print("Generated Access token is: ", user_session.get_start_url())
-            user_session.update_entrepreneur(user_session.access_token, request.env.context.get ('uid'))
+            user_session.update_entrepreneur(user_session.access_token, request.env.context.get ('uid'),"sell")
             end_url = user_session.get_start_url()
         survey_url = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url') + end_url
         return http.request.redirect(survey_url)
@@ -144,18 +144,41 @@ class Aspire360(http.Controller):
 
     @http.route('/aspire360measures/display_fundraise', auth='public',website=True, csrf=False)
     def display_fundraise(self, **kw):
-        # print("Params are: {}".format(kw))
-        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([])
-        # print("Num entries: ", len(entrepreneurs))
-        return http.request.redirect('/aspire360measures/v_index')
+        print("Params for display_fundraise are: {}".format(kw))
+        survey = http.request.env['survey.survey'].search([('title', '=', 'Readiness to Fundraise Assessment')])[0]
+        survey_id = survey["access_token"]
+        
+        latest_survey_entry = http.request.env['survey.user_input'].search([("aspire_entrepreneur","=", int(kw["user_id"])),
+                                                                             ("state","=","done"),
+                                                                             ("aspire_type","=","fundraise")])
+        print("User_id is: ", kw["user_id"])
+        print("Num Results is:", len(latest_survey_entry))
+        if len(latest_survey_entry) > 0:
+            latest_survey_token = latest_survey_entry[-1]["access_token"]
+            survey_results_url = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url') + "/survey/print/" + survey_id + "?answer_token=" + latest_survey_token + "&review=False"
+            # print("Num entries: ", len(entrepreneurs))
+            print("link to survey is: ", survey_results_url)
+            return http.request.redirect(survey_results_url)
+        else:
+            return http.request.render("aspire360_measures.survey_error")
     
     @http.route('/aspire360measures/display_sell', auth='public',website=True, csrf=False)
     def display_sell(self, **kw):
-        # print("Params are: {}".format(kw))
-        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([])
-        # print("Num entries: ", len(entrepreneurs))
-        return http.request.redirect('/aspire360measures/v_index')
+        print("Params for display_sell are: {}".format(kw))
+        survey = http.request.env['survey.survey'].search([('title', '=', 'Readiness to Sell Assessment'),])[0]
+        survey_id = survey["access_token"]
 
+        latest_survey_entry = http.request.env['survey.user_input'].search([("aspire_entrepreneur","=", int(kw["user_id"])),
+                                                                            ("state","=","done"),
+                                                                            ("aspire_type","=","sell")])
+        if len(latest_survey_entry) > 0:
+            latest_survey_token = latest_survey_entry[-1]["access_token"]
+            survey_results_url = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url') + "/survey/print/" + survey_id + "?answer_token=" + latest_survey_token + "&review=False"
+            # print("Num entries: ", len(entrepreneurs))
+            print("link to survey is: ", survey_results_url)
+            return http.request.redirect(survey_results_url)
+        else:
+            return http.request.render("aspire360_measures.survey_error")
 
     # @http.route('/academy/teacher/<model("academy.teachers"):teacher>/', auth='public', website=True)
     # def teacher(self, teacher):

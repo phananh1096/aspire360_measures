@@ -155,12 +155,18 @@
                             <h1>Search Results</h1>
                         </div>
                         <div t-foreach="companies" t-as="company" class="alert alert-info mt16">
-                            <form role="form" action="/aspire360measures/display_fundraise#entrepreneur=%s(company.company_name)">
-                                <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Fundraising Results</button>
+                            <!-- <form role="form" > -->
+                                <form role="form" action="/aspire360measures/display_fundraise">    
+                                    <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                                    <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Fundraising Results</button>
+                                </form>
+                                <form role="form" action="/aspire360measures/display_sell">    
+                                    <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                                    <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Sell Results</button>
+                                </form>
                                 <p>
                                     <h2 t-esc = "company.company_name" /> 
                                 </p>
-                                <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Sell Results</button>
                                 <p>
                                     <a>Founder: </a>
                                     <a t-esc = "company.name" /> 
@@ -182,7 +188,7 @@
                                 <!-- <div class="clearfix oe_login_buttons"> -->
 
                                 <!-- </div> -->
-                            </form>
+                            <!-- </form> -->
                             <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
                             <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p>
                         </div>
@@ -209,6 +215,22 @@
                     </div>
                 </div>
                 <div class="oe_structure"/>
+            </t>
+        </template>
+
+        <template id="survey_error">
+            <title>Aspire360Measures</title>
+            <t t-call="website.layout">
+                <t t-set="title">Error, no survey results found</t>
+                <div class="oe_structure">
+                    <div class="container">
+                        <h3>Sorry, this company has not completed this survey yet..</h3>
+                        <br/>
+                        <form role="form" action="/aspire360measures/search">    
+                            <button type="submit" class="btn btn-primary pull-bottom clearfix oe_login_buttons">Back</button>
+                        </form>
+                    </div>
+                </div>
             </t>
         </template>
 

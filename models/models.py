@@ -8,17 +8,19 @@ class Aspire360Survey(models.Model):
     _description = 'Aspire360 Extension of Surveys module'
 
     #Fields
+    aspire_type = fields.Char('Aspire Survey Type', help='Fundraise or Sell survey', readonly=True)
     aspire_entrepreneur = fields.Many2one('res.users', string='Entrpreneur or Company', ondelete='cascade', required=False)
     # aspire_entrepreneur = fields.Many2one('aspire360.entrepreneurs', string='Entrpreneur or Company', ondelete='cascade', required=False)
     
     # Method to update survey with entrepreneur id
-    def update_entrepreneur(self, access_token, entrepreneur_id):
+    def update_entrepreneur(self, access_token, entrepreneur_id, survey_type):
         # Fetch records
         #TODO: Make sure search matches
         records = self.env ['survey.user_input'].search([('access_token', '=', access_token)])
         # count = 0
         for record in records:
             record.aspire_entrepreneur = entrepreneur_id
+            record.aspire_type = survey_type
         #     count += 1
         # print("Total records updated: ", count) 
         # return super(Aspire360Survey,self).write({'aspire_entrepreneur':entrepreneur_id})
