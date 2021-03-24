@@ -51,13 +51,110 @@
             </t>
         </template>
 
-        <!-- <template id="biography">
+        <template id="entrepreneur_form" name="Company Details">
             <t t-call="website.layout">
-                <t t-set="title">Academy</t>
+                <div id="wrap">
+                    <div class="oe_structure">
+                        <div class="container">
+                            <form role="form" action="/aspire360measures/submit_info" method="POST">
+                                <input type="hidden" name="company_info" t-att-value="request.csrf_token()"/>
+                                <div class="form-group">
+                                    <label for="company_name" class="control-label">Company Name </label>
+                                    <input type="text" name="company_name" id="patient_name" class ="form-control" required="required"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="company_industry">Please select the industry that your company belongs to:</label>
+                                    <select id="company_industry" name="industry">
+                                        <option value="Administrative Services">Administrative Services</option>
+                                        <option value="Advertising">Advertising</option>
+                                        <option value="Agriculture and Farming">Agriculture and Farming</option>
+                                        <option value="Artificial Intelligence">Artificial Intelligence</option> 
+                                        <option value="Biotechnology">Biotechnology</option> 
+                                        <option value="Clothing and Apparel">Clothing and Apparel</option>  
+                                        <option value="Commerce and Shopping">Commerce and Shopping</option>  
+                                        <option value="Consumer Electronics">Consumer Electronics</option>
+                                        <option value="Consumer Goods">Consumer Goods</option>  
+                                        <option value="Content and Publishing">Content and Publishing</option>  
+                                        <option value="Data and Analytics">Data and Analytics</option> 
+                                        <option value="Design">Design</option> 
+                                        <option value="Education">Education</option>  
+                                        <option value="Energy">Energy</option> 
+                                        <option value="Financial Services">Financial Services</option>     
+                                        <option value="Food and Beverage">Food and Beverage</option>
+                                        <option value="Gaming">Gaming</option>
+                                        <option value="Government and Military">Government and Military</option>
+                                        <option value="Hardware">Hardware</option>
+                                        <option value="Healthcare">Healthcare</option>
+                                        <option value="Information Technology">Information Technology</option>
+                                        <option value="Manufacturing">Manufacturing</option>
+                                        <option value="Media and Entertainment">Media and Entertainment</option>
+                                        <option value="Navigation and Mapping">Navigation and Mapping</option>
+                                        <option value="Others">Others</option>
+                                        <option value="Payments">Payments</option>
+                                        <option value="Platforms">Platforms</option>
+                                        <option value="Privacy and Security">Privacy and Security</option>
+                                        <option value="Professional Services">Professional Services</option>
+                                        <option value="Real Estate">Real Estate</option>
+                                        <option value="Sales and Marketing">Sales and Marketing</option>
+                                        <option value="Science and Engineering">Science and Engineering</option>
+                                        <option value="Software">Software</option>
+                                        <option value="Sports">Sports</option>
+                                        <option value="Sustainability">Sustainability</option>
+                                        <option value="Telecommunications">Telecommunications</option>
+                                        <option value="Transportation">Transportation</option>
+                                        <option value="Travel and Tourism">Travel and Tourism</option>
+                                        <option value="Video">Video</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="company_employees">Please indicate your company size:</label>
+                                    <select id="company_employees" name="employees">
+                                        <option value="1-10 employees">1-10 employees</option>
+                                        <option value="11-50 employees">11-50 employees</option>
+                                        <option value="51-200 employees">51-200 employees</option>
+                                        <option value="200+ employees">200+ employees</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="company_funding_stage">Please indicate what funding stage your company is in:</label>
+                                    <select id="company_funding_stage" name="funding_stage">
+                                        <option value="Pre-seed">Pre-seed</option>
+                                        <option value="Seed">Seed</option>
+                                        <option value="Stage A">Stage A</option>
+                                        <option value="Stage B">Stage B</option>
+                                        <option value="Stage C">Stage C</option>
+                                        <option value="Stage D/E/Others">Stage D/E/Others</option>
+                                    </select>
+                                </div>
+                                <div class="clearfix oe_login_buttons">
+                                    <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+
+        <template id="search">
+            <t t-call="website.layout">
+                <t t-set="title">Search Results</t>
                 <div class="oe_structure"/>
                 <div class="oe_structure">
                     <div class="container">
-                        <h3 t-field="person.name"/>
+                        <p t-foreach="companies" t-as="company">
+                            <t t-esc = "company.name" /> 
+                            <t t-esc = "company.user_id" /> 
+                            <t t-esc = "company.company_name" /> 
+                            <a t-attf-href="/aspire360measures/survey/fundraise">
+                                View latest Readiness to Fundraise Assessment results
+                            </a>
+                            <a t-attf-href="/aspire360measures/survey/sell">
+                                View latest Readiness to Sell Assessment results
+                            </a>
+                        </p>
+                        <!-- <h3 t-field="person.name"/>
                         <p>Last modified: <i t-field="person.write_date" t-options='{"widget": "relative"}'/></p>
                         <div t-field="person.biography"/>
                         <div class="col-md-7 col-sm-8">
@@ -76,12 +173,12 @@
                                 <input type="radio" id="button-5" name="gender" value="other"/>
                                 <label for="button-5">5 - Love it</label>
                             </form>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="oe_structure"/>
             </t>
-        </template> -->
+        </template>
 
     <data>
         <!-- <function model="geo_subdivision.geo_subdivision" name="myfunction"/>  -->

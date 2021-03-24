@@ -99,12 +99,54 @@ class Aspire360(http.Controller):
             # print("User id is: ", request.env.user)
             user_session = user_inputs.search([])[-1]
             # print("Num user sessions is: ", len(user_inputs.search([])))
-            # print("Generated Access token is: ", user_session.access_token)
+            print("Generated Access token is: ", user_session.access_token)
+            # print("Generated Answer token is: ", user_session.answer_token)
             # print("Generated Access token is: ", user_session.get_start_url())
             user_session.update_entrepreneur(user_session.access_token, request.env.context.get ('uid'))
             end_url = user_session.get_start_url()
         survey_url = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url') + end_url
         return http.request.redirect(survey_url)
+
+    @http.route('/aspire360measures/entrepreneur_form', auth='public',website=True)
+    def entrepreneur_form(self, **kw):
+        return http.request.render('aspire360_measures.entrepreneur_form')
+    
+    @http.route('/aspire360measures/submit_info', auth='public',website=True, csrf=False)
+    def submit_info(self, **kw):
+        entrepreneurs = http.request.env['aspire360.entrepreneurs']
+        entrepreneurs.edit_profile(kw, request.env.context.get ('uid'))
+        print("Params are: {}".format(kw))
+        # print("company name: ", kw["company_info"])
+
+        # print("company industry: ", kw["company_industry"])
+        # print("company employee: ", kw["company_employees"])
+        # print("company funding: ", kw["company_funding_stage"])
+        return http.request.render('aspire360_measures.e_index')
+    
+    @http.route('/aspire360measures/search', auth='public',website=True, csrf=False)
+    def search(self, **kw):
+        print("Params are: {}".format(kw))
+        #TODO: UPDATE SEARCH FUNCTION BASED ON PARAMS
+        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([])
+        print("Num entries: ", len(entrepreneurs))
+        return http.request.render('aspire360_measures.search',{
+            'companies': entrepreneurs
+        })
+
+    @http.route('/aspire360measures/display_fundraise', auth='public',website=True, csrf=False)
+    def display_fundraise(self, **kw):
+        # print("Params are: {}".format(kw))
+        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([])
+        # print("Num entries: ", len(entrepreneurs))
+        return http.request.redirect('/aspire360measures/v_index')
+    
+    @http.route('/aspire360measures/display_sell', auth='public',website=True, csrf=False)
+    def display_sell(self, **kw):
+        # print("Params are: {}".format(kw))
+        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([])
+        # print("Num entries: ", len(entrepreneurs))
+        return http.request.redirect('/aspire360measures/v_index')
+
 
     # @http.route('/academy/teacher/<model("academy.teachers"):teacher>/', auth='public', website=True)
     # def teacher(self, teacher):
