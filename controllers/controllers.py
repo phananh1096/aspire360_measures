@@ -66,6 +66,11 @@ class Aspire360(http.Controller):
                           'user_id':request.env.context.get ('uid')}
             entrepreneurs.create(new_record)
         return http.request.redirect('/aspire360measures')
+
+    @http.route('/aspire360measures/email', auth='public',website=True)
+    def setup_email(self, **kw):
+        #Security measure to prevent someone from signing up twice
+        return http.request.render('aspire360_measures.email')
         
     @http.route('/aspire360measures/survey/fundraise', auth='public', website=True)
     def survey_1(self):

@@ -24,6 +24,9 @@
                 <div class="oe_structure">
                     <div class="container">
                         <h1>Investor Homepage</h1>
+                        <p><a t-attf-href="/aspire360measures/email">
+                            Email Entrepreneurs</a>
+                        </p>
                         <p>
                             TO BE UPDATED
                         </p>
@@ -32,6 +35,28 @@
             </t>
         </template>
             
+        <template id="email">
+            <title>Aspire360Measures</title>
+            <t t-call="website.layout">
+                <t t-set="title">Aspire360Measures Email Sender</t>
+                <div class="oe_structure">
+                    <form target="_self" action="" method="post" id="email_form">
+
+                        From: <input type="text" name="num_a" class="num_A"/><br/>
+
+                        To: <input type="text" name="num_b" class="num_B"/><br/>
+
+                        Subject: <input type="text" name="total" class="total" readonly="True"/><br/>
+
+                         <button type="button" name="button" class="my-button">
+
+                            <a href="/aspire360measures" class="btn btn-info">Submit</a>
+
+                        </button>
+                    </form>
+                </div>
+            </t>
+        </template>
         
         <template id="setup">
             <title>Aspire360Measures</title>
