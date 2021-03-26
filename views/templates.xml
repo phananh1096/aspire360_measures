@@ -90,8 +90,8 @@
 
         <template id="entrepreneur_form" name="Company Details" >
             <xpath expr=".">
-                <script type="text/javascript" src="/aspire360_measures/static/src/js/test.js"/>
-                <link href = "/aspire360_measures/static/src/css/styling.css" rel = "stylesheet" type = "text/css" />
+                <!-- <script type="text/javascript" src="/aspire360_measures/static/src/js/test.js"/> -->
+                <!-- <link href = "/aspire360_measures/static/src/css/styling.css" rel = "stylesheet" type = "text/css" /> -->
             </xpath>
             <t t-call="website.layout">
                 <div id="wrap">
