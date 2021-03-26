@@ -35,25 +35,37 @@
             </t>
         </template>
             
-        <template id="email">
-            <title>Aspire360Measures</title>
+        <template id="email_form" name="Contact Entrepreneur">
             <t t-call="website.layout">
-                <t t-set="title">Aspire360Measures Email Sender</t>
-                <div class="oe_structure">
-                    <form target="_self" action="" method="post" id="email_form">
-
-                        From: <input type="text" name="num_a" class="num_A"/><br/>
-
-                        To: <input type="text" name="num_b" class="num_B"/><br/>
-
-                        Subject: <input type="text" name="total" class="total" readonly="True"/><br/>
-
-                         <button type="button" name="button" class="my-button">
-
-                            <a href="/aspire360measures" class="btn btn-info">Submit</a>
-
-                        </button>
-                    </form>
+                <div id="wrap">
+                    <div class="oe_structure">
+                        <div class="container">
+                            <form role="form" action="/aspire360measures/submit_email" method="POST">
+                                <div class="form-group">
+                                    <label for="email_recipient" class="control-label">Recipient</label>
+                                    <input type="text" name="email_recipient" id="email_recipient" class ="form-control" required="required"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email_sender" class="control-label">From</label>
+                                    <input type="text" name="email_sender" id="email_sender" class ="form-control" required="required"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email_subject" class="control-label">Subject</label>
+                                    <input type="text" name="email_subject" id="email_subject" class ="form-control" required="required"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email_content" class="control-label">Please select the email template</label>
+                                    <select id="email_content" name="email_template">
+                                        <option value="Introduction">Introduction</option>
+                                        <option value="Follow-up">Follow-up</option>
+                                    </select>
+                                </div>
+                                <div class="clearfix oe_login_buttons">
+                                    <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </t>
         </template>

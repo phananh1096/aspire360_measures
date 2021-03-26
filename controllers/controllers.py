@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 from odoo.http import request
+from socket import *
+import base64
+import time
 
 class Aspire360(http.Controller):
     @http.route('/aspire360measures/', auth='public',website=True)
@@ -70,8 +73,86 @@ class Aspire360(http.Controller):
     @http.route('/aspire360measures/email', auth='public',website=True)
     def setup_email(self, **kw):
         #Security measure to prevent someone from signing up twice
-        return http.request.render('aspire360_measures.email')
+        return http.request.render('aspire360_measures.email_form')
         
+    def email_helper(self, rec, fro, msg, subj):
+        endmsg = "\r\n.\r\n"
+        mailserver = ("smtp.mailtrap.io", 2525)
+        clientSocket = socket(AF_INET, SOCK_STREAM)
+        clientSocket.connect(mailserver)
+        clientSocket.settimeout(None)
+        recv = clientSocket.recv(1024)
+        recv = recv.decode()
+        print(recv)
+        if recv[:3] != '220':
+            print('reply not received from server.')
+        heloCommand = 'EHLO Alice\r\n'
+        clientSocket.send(heloCommand.encode())
+        recv1 = clientSocket.recv(1024)
+        recv1 = recv1.decode()
+        print("1: " + recv1)
+        if recv1[:3] != '250':
+            print('250 reply not received from server.')
+
+        #Info for username and password
+        username = "404819e151fafc"
+        password = "3f6871122cd6fa"
+        Authentication = 'AUTH LOGIN\r\n'
+        clientSocket.send(Authentication.encode())
+        recv = clientSocket.recv(1024)
+        uname = base64.b64encode(username.encode()) + b'\r\n'
+        clientSocket.send(uname)
+        recv = clientSocket.recv(1024)
+        uname = base64.b64encode(password.encode()) + b'\r\n'
+        clientSocket.send(uname)
+        recv = clientSocket.recv(1024)
+
+        command = "MAIL FROM:<" + fro + ">\r\n"
+        clientSocket.send(str.encode(command))
+        recv2 = clientSocket.recv(1024)
+        recv2 = recv2.decode()
+
+        command = "RCPT TO:<" + rec + ">\r\n"
+        clientSocket.send(str.encode(command))
+        recv3 = clientSocket.recv(1024)
+        recv3 = recv3.decode()
+
+        command = "DATA\r\n"
+        clientSocket.send(str.encode(command))
+        recv4 = clientSocket.recv(1024)
+        recv4 = recv4.decode()
+
+        command = "Subject: " + subj + "\r\n\r\n" 
+        clientSocket.send(str.encode(command))
+        date = time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())
+        date = date + "\r\n\r\n"
+        clientSocket.send(str.encode(date))
+        clientSocket.send(str.encode(msg))
+        clientSocket.send(str.encode(endmsg))
+        recv_msg = clientSocket.recv(1024)
+
+        quit = "QUIT\r\n"
+        clientSocket.send(str.encode(quit))
+        recv5 = clientSocket.recv(1024)
+        print(recv5)
+        clientSocket.close()
+
+    @http.route('/aspire360measures/submit_email', auth='public',website=True, csrf=False)
+    def submit_email(self, **kw):
+        print("Params are: {}".format(kw))
+        # print("company name: ", kw["company_info"])
+
+        # print("company industry: ", kw["company_industry"])
+        # print("company employee: ", kw["company_employees"])
+        # print("company funding: ", kw["company_funding_stage"])
+        #return http.request.render('aspire360_measures.e_index')
+        msg = ""
+        if kw["email_template"] == "Follow-up":
+            msg = "This is a follow-up from the investor. This is a test message for development"
+        else:
+            msg = "This is an introduction from the investor. This is a test message for development"
+        self.email_helper(kw["email_recipient"], kw["email_sender"], msg, kw["email_template"])
+
     @http.route('/aspire360measures/survey/fundraise', auth='public', website=True)
     def survey_1(self):
         surveys = http.request.env['survey.survey'].search([('title', '=', 'Readiness to Fundraise Assessment')])
