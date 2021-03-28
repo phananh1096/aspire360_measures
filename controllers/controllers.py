@@ -6,11 +6,13 @@ import base64
 import time
 
 # Validation parameter. Turn off when developing and on when testing
-VALIDATION = True
+VALIDATION = False
 
 class Aspire360(http.Controller):
     @http.route('/aspire360measures/', auth='public',website=True)
     def index(self, **kw):
+        print("HELLO IN CONTROLLER")
+        print("HELLO IN CONTROLLER")
         entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
         venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get ('uid'))])
         if not self.is_entrepreneur() and not self.is_venturecapitalist():
@@ -37,20 +39,6 @@ class Aspire360(http.Controller):
         return http.request.render('aspire360_measures.setup')
     
     @http.route('/aspire360measures/setup/v', auth='public',website=True)
-    def setup_e(self, **kw):
-        #Security measure to prevent someone from signing up twice
-        if VALIDATION:
-            if self.is_entrepreneur() or self.is_venturecapitalist():
-                return http.request.redirect('/aspire360measures')
-            else:
-                # Call respective model functions to create new user
-                new_record = {'name':request.env.user.name,
-                            'user_id':request.env.context.get ('uid')}
-                venture_capitalists.create(new_record)
-        return http.request.redirect('/aspire360measures')
-    
-
-    @http.route('/aspire360measures/setup/e', auth='public',website=True)
     def setup_v(self, **kw):
         #Security measure to prevent someone from signing up twice
         if VALIDATION:
@@ -58,6 +46,22 @@ class Aspire360(http.Controller):
                 return http.request.redirect('/aspire360measures')
             else:
                 # Call respective model functions to create new user
+                venture_capitalists = http.request.env['aspire360.venturecapitalists']
+                new_record = {'name':request.env.user.name,
+                            'user_id':request.env.context.get ('uid')}
+                venture_capitalists.create(new_record)
+        return http.request.redirect('/aspire360measures')
+    
+
+    @http.route('/aspire360measures/setup/e', auth='public',website=True)
+    def setup_e(self, **kw):
+        #Security measure to prevent someone from signing up twice
+        if VALIDATION:
+            if self.is_entrepreneur() or self.is_venturecapitalist():
+                return http.request.redirect('/aspire360measures')
+            else:
+                # Call respective model functions to create new user
+                entrepreneurs = http.request.env['aspire360.entrepreneurs']
                 new_record = {'name':request.env.user.name,
                             'user_id':request.env.context.get ('uid')}
                 entrepreneurs.create(new_record)
