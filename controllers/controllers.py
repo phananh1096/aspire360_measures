@@ -7,69 +7,66 @@ import time
 import re 
 from odoo.http import Response
 
+# Validation parameter. Turn off when developing and on when testing
+VALIDATION = False
+
 class Aspire360(http.Controller):
     @http.route('/aspire360measures/', auth='public',website=True)
     def index(self, **kw):
-        # entrepreneurs = http.request.env['aspire360.entrepreneurs']
-        # venture_capitalists = http.request.env['aspire360.venturecapitalists']
+        print("HELLO IN CONTROLLER")
+        print("HELLO IN CONTROLLER")
         entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
         venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get ('uid'))])
-        print("Entrepreneurs: ", entrepreneurs)
-        print("Entrepreneurs: ", venture_capitalists)
-        print("User uid: ", request.env.user)
-        print("User uid: ",request.env.context)
-        print("User uid: ", request.env.context.get ('uid'))
-        print("Context: ", http.request.env['ir.config_parameter'].sudo().get_param('web.base.url'))
-        # If user doesn't exist in either, redirect to create page to get them to get them to decide whether entrepreneur or vc
-        if len(entrepreneurs) == 0 and len(venture_capitalists) == 0:
+        if not self.is_entrepreneur() and not self.is_venturecapitalist():
             return http.request.redirect('/aspire360measures/setup')
-        elif len(venture_capitalists) > 0:
+        elif self.is_venturecapitalist():
             return http.request.render('aspire360_measures.v_index')
         else:
             return http.request.render('aspire360_measures.e_index')
-        # print("User uid: ", self.env.user.name)
-        #TODO: Apply filter to check based on id?
-        # Validation: Check if user id exists within tables. If not, redirect to setup.
-        # IF record not found in both entrepreneurs and venture_capitalists: redirect to /setup
+        # print("Entrepreneurs: ", entrepreneurs)
+        # print("Entrepreneurs: ", venture_capitalists)
+        # print("User uid: ", request.env.user)
+        # print("User uid: ",request.env.context)
+        # print("User uid: ", request.env.context.get ('uid'))
+        # print("Context: ", http.request.env['ir.config_parameter'].sudo().get_param('web.base.url'))
+        # If user doesn't exist in either, redirect to create page to get them to get them to decide whether entrepreneur or vc
 
     
     @http.route('/aspire360measures/setup', auth='public',website=True)
     def setup(self, **kw):
         #Security measure to prevent someone from signing up twice
-        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
-        venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get ('uid'))])
-        if len(entrepreneurs) > 0 or len(venture_capitalists) > 0:
-            return http.request.redirect('/aspire360measures')
+        if VALIDATION:
+            if self.is_entrepreneur() or self.is_venturecapitalist():
+                return http.request.redirect('/aspire360measures')
         return http.request.render('aspire360_measures.setup')
     
     @http.route('/aspire360measures/setup/v', auth='public',website=True)
-    def setup_e(self, **kw):
+    def setup_v(self, **kw):
         #Security measure to prevent someone from signing up twice
-        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
-        venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get ('uid'))])
-        if len(entrepreneurs) > 0 or len(venture_capitalists) > 0:
-            return http.request.redirect('/aspire360measures')
-        else:
-            # Call respective model functions to create new user
-            new_record = {'name':request.env.user.name,
-                          'user_id':request.env.context.get ('uid')}
-            venture_capitalists.create(new_record)
+        if VALIDATION:
+            if self.is_entrepreneur() or self.is_venturecapitalist():
+                return http.request.redirect('/aspire360measures')
+            else:
+                # Call respective model functions to create new user
+                venture_capitalists = http.request.env['aspire360.venturecapitalists']
+                new_record = {'name':request.env.user.name,
+                            'user_id':request.env.context.get ('uid')}
+                venture_capitalists.create(new_record)
         return http.request.redirect('/aspire360measures')
     
 
     @http.route('/aspire360measures/setup/e', auth='public',website=True)
-    def setup_v(self, **kw):
+    def setup_e(self, **kw):
         #Security measure to prevent someone from signing up twice
-        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
-        venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get ('uid'))])
-        if len(entrepreneurs) > 0 or len(venture_capitalists) > 0:
-            return http.request.redirect('/aspire360measures')
-        else:
-            # Call respective model functions to create new user
-            # Call respective model functions to create new user
-            new_record = {'name':request.env.user.name,
-                          'user_id':request.env.context.get ('uid')}
-            entrepreneurs.create(new_record)
+        if VALIDATION:
+            if self.is_entrepreneur() or self.is_venturecapitalist():
+                return http.request.redirect('/aspire360measures')
+            else:
+                # Call respective model functions to create new user
+                entrepreneurs = http.request.env['aspire360.entrepreneurs']
+                new_record = {'name':request.env.user.name,
+                            'user_id':request.env.context.get ('uid')}
+                entrepreneurs.create(new_record)
         return http.request.redirect('/aspire360measures')
 
     @http.route('/aspire360measures/email', auth='public',website=True)
@@ -163,6 +160,8 @@ class Aspire360(http.Controller):
 
     @http.route('/aspire360measures/survey/fundraise', auth='public', website=True)
     def survey_1(self):
+        if VALIDATION and not self.is_entrepreneur():
+            return http.request.redirect('/aspire360measures')
         surveys = http.request.env['survey.survey'].search([('title', '=', 'Readiness to Fundraise Assessment')])
         end_url = ''
         for survey in surveys:
@@ -186,6 +185,8 @@ class Aspire360(http.Controller):
 
     @http.route('/aspire360measures/survey/sell', auth='public', website=True)
     def survey_2(self):
+        if VALIDATION and not self.is_entrepreneur():
+            return http.request.redirect('/aspire360measures')
         surveys = http.request.env['survey.survey'].search([('title', '=', 'Readiness to Sell Assessment')])
         end_url = ''
         for survey in surveys:
@@ -201,12 +202,17 @@ class Aspire360(http.Controller):
         survey_url = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url') + end_url
         return http.request.redirect(survey_url)
 
-    @http.route('/aspire360measures/entrepreneur_form', auth='public',website=True)
-    def entrepreneur_form(self, **kw):
-        return http.request.render('aspire360_measures.entrepreneur_form')
+    @http.route('/aspire360measures/entrepreneur_edit_profile', auth='public',website=True)
+    def entrepreneur_edit_profile(self, **kw):
+        #Validate current user is entrepreneur
+        if VALIDATION and not self.is_entrepreneur():
+            return http.request.redirect('/aspire360measures')
+        return http.request.render('aspire360_measures.entrepreneur_edit_profile')
     
     @http.route('/aspire360measures/submit_info', auth='public',website=True, csrf=False)
     def submit_info(self, **kw):
+        if VALIDATION and not self.is_entrepreneur():
+            return http.request.redirect('/aspire360measures')
         entrepreneurs = http.request.env['aspire360.entrepreneurs']
         entrepreneurs.edit_profile(kw, request.env.context.get ('uid'))
         print("Params are: {}".format(kw))
@@ -219,17 +225,23 @@ class Aspire360(http.Controller):
     
     @http.route('/aspire360measures/search', auth='public',website=True, csrf=False)
     def search(self, **kw):
+        if VALIDATION and not self.is_venturecapitalist():
+            return http.request.redirect('/aspire360measures')
+        #Validate current user is venture capitalisst
+        # venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get ('uid'))])
+        # if len(venture_capitalists) == 0:
+        #     return http.request.redirect('/aspire360measures')
         print("Params are: {}".format(kw))
         #TODO: UPDATE SEARCH FUNCTION BASED ON PARAMS
         params = list()
         if "company_name" in kw and kw["company_name"] != "":
             params.append(("company_name","=",kw["company_name"]))
-        if "company_industry" in kw and kw["company_industry"] != "All":
-            params.append(("company_industry","=",kw["company_industry"]))
-        if "company_size" in kw and kw["company_size"] != "All":
-            params.append(("company_size","=",kw["company_size"]))
-        if "company_funding" in kw and kw["company_funding"] != "All":
-            params.append(("company_funding","=",kw["company_funding"]))
+        if "industry" in kw and kw["industry"] != "All":
+            params.append(("company_industry","=",kw["industry"]))
+        if "employees" in kw and kw["employees"] != "All":
+            params.append(("company_size","=",kw["employees"]))
+        if "funding_stage" in kw and kw["funding_stage"] != "All":
+            params.append(("company_funding","=",kw["funding_stage"]))
         entrepreneurs = http.request.env['aspire360.entrepreneurs'].search(params)
         print("Num entries: ", len(entrepreneurs))
         return http.request.render('aspire360_measures.search',{
@@ -238,6 +250,8 @@ class Aspire360(http.Controller):
 
     @http.route('/aspire360measures/display_fundraise', auth='public',website=True, csrf=False)
     def display_fundraise(self, **kw):
+        if VALIDATION and not self.is_venturecapitalist():
+            return http.request.redirect('/aspire360measures')
         print("Params for display_fundraise are: {}".format(kw))
         survey = http.request.env['survey.survey'].search([('title', '=', 'Readiness to Fundraise Assessment')])[0]
         survey_id = survey["access_token"]
@@ -258,6 +272,8 @@ class Aspire360(http.Controller):
     
     @http.route('/aspire360measures/display_sell', auth='public',website=True, csrf=False)
     def display_sell(self, **kw):
+        if VALIDATION and not self.is_venturecapitalist():
+            return http.request.redirect('/aspire360measures')
         print("Params for display_sell are: {}".format(kw))
         survey = http.request.env['survey.survey'].search([('title', '=', 'Readiness to Sell Assessment'),])[0]
         survey_id = survey["access_token"]
@@ -273,6 +289,23 @@ class Aspire360(http.Controller):
             return http.request.redirect(survey_results_url)
         else:
             return http.request.render("aspire360_measures.survey_error")
+
+    """ --- Helper functions --- """
+    # Validation helpers
+    def is_entrepreneur(self):
+        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
+        if len(entrepreneurs) > 0:
+            return True
+        else:
+            return False
+    
+    def is_venturecapitalist(self):
+        venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get ('uid'))])
+        if len(venture_capitalists) > 0:
+            return True
+        else:
+            return False
+
 
     # @http.route('/academy/teacher/<model("academy.teachers"):teacher>/', auth='public', website=True)
     # def teacher(self, teacher):
