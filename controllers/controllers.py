@@ -4,6 +4,8 @@ from odoo.http import request
 from socket import *
 import base64
 import time
+import re 
+from odoo.http import Response
 
 class Aspire360(http.Controller):
     @http.route('/aspire360measures/', auth='public',website=True)
@@ -137,21 +139,27 @@ class Aspire360(http.Controller):
         print(recv5)
         clientSocket.close()
 
+    def is_valid_email(self, email):
+        return re.search('^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$', email)
+
     @http.route('/aspire360measures/submit_email', auth='public',website=True, csrf=False)
     def submit_email(self, **kw):
         print("Params are: {}".format(kw))
-        # print("company name: ", kw["company_info"])
-
-        # print("company industry: ", kw["company_industry"])
-        # print("company employee: ", kw["company_employees"])
-        # print("company funding: ", kw["company_funding_stage"])
-        #return http.request.render('aspire360_measures.e_index')
-        msg = ""
-        if kw["email_template"] == "Follow-up":
-            msg = "This is a follow-up from the investor. This is a test message for development"
+        if self.is_valid_email(kw["email_recipient"]):
+            msg = ""
+            if kw["email_template"] == "Follow-up":
+                msg = "This is a follow-up from the investor. This is a test message for development"
+            else:
+                msg = "This is an introduction from the investor. This is a test message for development"
+            self.email_helper(kw["email_recipient"], kw["email_sender"], msg, kw["email_template"])
+            return Response("Your email has been sent", status=200)
         else:
-            msg = "This is an introduction from the investor. This is a test message for development"
-        self.email_helper(kw["email_recipient"], kw["email_sender"], msg, kw["email_template"])
+            return Response("Invalid email", status=400)
+
+    @http.route('/aspire360measures/invalid_email', auth='public',website=True)
+    def setup_invalid_email(self, **kw):
+        #Security measure to prevent someone from signing up twice
+        return http.request.render('aspire360_measures.invalid_email_form')
 
     @http.route('/aspire360measures/survey/fundraise', auth='public', website=True)
     def survey_1(self):

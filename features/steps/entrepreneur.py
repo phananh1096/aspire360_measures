@@ -116,3 +116,45 @@ def step_impl(context):
 @then('we don\'t see the survey')
 def step_impl(context):
     assert "Readiness to Fundraise Survey" not in driver.page_source
+
+@given('we are on the investor home page')
+def step_impl(context):
+    driver.get("http://localhost:8069/aspire360measures/setup")
+    assert "Investor Homepage" in driver.page_source
+
+@when('we go to investor home screen')
+def step_impl(context):
+    driver.get("http://localhost:8069/aspire360measures/setup")
+    assert "Investor Homepage" in driver.page_source
+
+@then('we see investor actions')
+def step_impl(context):
+    driver.get("http://localhost:8069/aspire360measures/setup")
+    assert "Email Entrepreneurs" in driver.page_source
+
+@when('we go to email screen')
+def step_impl(context):
+    driver.get("http://localhost:8069/aspire360measures/email")
+    assert "Recipient" in driver.page_source
+
+@then('we fill out the email template incorrectly')
+def step_impl(context):
+    email_input = driver.find_element_by_id("email_recipient")
+    email_input.send_keys('invalid email')
+    email_input = driver.find_element_by_id("email_sender")
+    email_input.send_keys('investor@investor.com')
+    email_input = driver.find_element_by_id("email_subject")
+    email_input.send_keys('I would like to connect with you')
+    email_input.send_keys(Keys.ENTER)
+    assert "Invalid email" in driver.page_source
+
+@then('we fill out the email template correctly')
+def step_impl(context):
+    email_input = driver.find_element_by_id("email_recipient")
+    email_input.send_keys('entrepreneur@entrepreneur.com')
+    email_input = driver.find_element_by_id("email_sender")
+    email_input.send_keys('investor@investor.com')
+    email_input = driver.find_element_by_id("email_subject")
+    email_input.send_keys('I would like to connect with you')
+    email_input.send_keys(Keys.ENTER)
+    assert "Your email has been sent" in driver.page_source
