@@ -35,6 +35,8 @@
 
 - For iteration 1: We mainly focused on setting up an installable app that can be integrated and accepted by the Odoo platform. Basic functionality that we have set up is: Initial setup logic and validation when users first log into the homepage and select whether they are a VC investor or Entrepreneur CEO. We also have implemented basic assessment-taking capabilities where entrepreneurs can take either the *Readiness to Fundraise Assessment* or the *Readiness to Sell Assessment*. 
 
+- For iteration 2: We focussed on building features for investors during this iteration. We were able to implement search capabilities that allow investors to search for entrepreneurs and their companies based on sets of filters and company name search. We also implemented survey results retrieval capabilities so that companies that show up in a search will also present their latest survey metrics. Additionally, we experimented with a simple mailing feature that we will expand on for the final iteration in addition to upgrading the entrepreneur dashboards.
+
 ## Download and Installation Instructions for TAs
 
 - As our product is a module built within Odoo, module setup would require installation of the original Odoo platform as well as setting up a PostgreSQL database.

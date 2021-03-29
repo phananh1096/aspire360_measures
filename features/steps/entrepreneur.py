@@ -82,37 +82,84 @@ def step_impl(context):
         surveys_button.click()
     except:
         driver.get("http://localhost:8069/web#action=147&model=survey.survey&view_type=kanban&cids=1&menu_id=102")
-    assert True is not False 
+    assert True
 
 @then('we go to fundraising survey')
 def step_impl(context):
     try:
-        driver.get("http://localhost:8069/aspire360measures/survey/fundraise")
-        assert "Readiness to Fundraise Assessment" in driver.page_source
+        driver.get("http://localhost:8069/survey/9d328807-4283-48b6-a5b6-414b3d741dae/525294be-9679-4c0f-be56-3d26d424612e")
     except:
         assert False
-    assert True
+    assert "Readiness to Fundraise Assessment" in driver.page_source
 
 @then('we fail the survey')
 def step_impl(context):
-    python_button = driver.find_element_by_class_name("o_connected_user")
-    python_button.send_keys(Keys.ENTER)
-    wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//span[text()='wrong_answer']"))).click()
-    python_button = driver.find_element_by_class_name("o_connected_user")
-    python_button.send_keys(Keys.ENTER)
+    try:
+        python_button = driver.find_element_by_class_name("o_connected_user")
+        python_button.send_keys(Keys.ENTER)
+        wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//span[text()='wrong_answer']"))).click()
+        python_button = driver.find_element_by_class_name("o_connected_user")
+        python_button.send_keys(Keys.ENTER)
     #python_button.click()
+    except:
+        assert "Retry" in driver.page_source
     assert True
 
 @then('we pass the survey')
 def step_impl(context):
-    python_button = driver.find_element_by_class_name("o_connected_user")
-    python_button.send_keys(Keys.ENTER)
-    wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//span[text()='right_answer']"))).click()
-    python_button = driver.find_element_by_class_name("o_connected_user")
-    python_button.send_keys(Keys.ENTER)
+    try:
+        python_button = driver.find_element_by_class_name("o_connected_user")
+        python_button.send_keys(Keys.ENTER)
+        wait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//span[text()='right_answer']"))).click()
+        python_button = driver.find_element_by_class_name("o_connected_user")
+        python_button.send_keys(Keys.ENTER)
+    except:
+        assert "Thank you!" in driver.page_source
     #python_button.click()
     assert True
 
 @then('we don\'t see the survey')
 def step_impl(context):
     assert "Readiness to Fundraise Survey" not in driver.page_source
+
+@given('we are on the investor home page')
+def step_impl(context):
+    driver.get("http://localhost:8069/aspire360measures/setup/v")
+    assert "Investor Homepage" in driver.page_source
+
+@when('we go to investor home screen')
+def step_impl(context):
+    driver.get("http://localhost:8069/aspire360measures/setup/v")
+    assert "Investor Homepage" in driver.page_source
+
+@then('we see investor actions')
+def step_impl(context):
+    #driver.get("http://localhost:8069/aspire360measures/setup")
+    assert "Email Entrepreneurs" in driver.page_source
+
+@when('we go to email screen')
+def step_impl(context):
+    driver.get("http://localhost:8069/aspire360measures/email")
+    assert "Recipient" in driver.page_source
+
+@then('we fill out the email template incorrectly')
+def step_impl(context):
+    email_input = driver.find_element_by_id("email_recipient")
+    email_input.send_keys('invalid email')
+    email_input = driver.find_element_by_id("email_sender")
+    email_input.send_keys('investor@investor.com')
+    email_input = driver.find_element_by_id("email_subject")
+    email_input.send_keys('I would like to connect with you')
+    email_input.send_keys(Keys.ENTER)
+    assert "Invalid email" in driver.page_source
+
+@then('we fill out the email template correctly')
+def step_impl(context):
+    email_input = driver.find_element_by_id("email_recipient")
+    email_input.send_keys('entrepreneur@entrepreneur.com')
+    email_input = driver.find_element_by_id("email_sender")
+    email_input.send_keys('investor@investor.com')
+    email_input = driver.find_element_by_id("email_subject")
+    email_input.send_keys('I would like to connect with you')
+    email_input.send_keys(Keys.ENTER)
+    assert "Your email has been sent" in driver.page_source
