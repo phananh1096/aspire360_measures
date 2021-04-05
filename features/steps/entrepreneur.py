@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait as wait
+from selenium.webdriver.support.ui import Select
 
 use_step_matcher("re")
 
@@ -151,7 +152,7 @@ def step_impl(context):
     email_input = driver.find_element_by_id("email_subject")
     email_input.send_keys('I would like to connect with you')
     email_input.send_keys(Keys.ENTER)
-    assert "Invalid email" in driver.page_source
+    assert "Your email has been sent" not in driver.page_source
 
 @then('we fill out the email template correctly')
 def step_impl(context):
@@ -162,4 +163,28 @@ def step_impl(context):
     email_input = driver.find_element_by_id("email_subject")
     email_input.send_keys('I would like to connect with you')
     email_input.send_keys(Keys.ENTER)
-    assert "Your email has been sent" in driver.page_source
+    assert "Invalid email" not in driver.page_source
+
+@then('select a company category')
+def step_impl(context):
+    select = Select(driver.find_element_by_id('company_industry'))
+    select.select_by_visible_text('Advertising')
+    select = driver.find_element_by_id('company_industry')
+    select.send_keys(Keys.ENTER)
+    assert "Sorry, no companies found" in driver.page_source
+
+@then('select a company stage')
+def step_impl(context):
+    select = Select(driver.find_element_by_id('company_funding_stage'))
+    select.select_by_visible_text('Pre-seed')
+    select = driver.find_element_by_id('company_funding_stage')
+    select.send_keys(Keys.ENTER)
+    assert "Sorry, no companies found" in driver.page_source
+
+@then('select a company size')
+def step_impl(context):
+    select = Select(driver.find_element_by_id('company_employees'))
+    select.select_by_visible_text('1-10 employees')
+    select = driver.find_element_by_id('company_employees')
+    select.send_keys(Keys.ENTER)
+    assert "Sorry, no companies found" in driver.page_source

@@ -10,7 +10,7 @@ Feature: setting up and using core features of Aspire360
       When we go to home screen
       Then we go to signin
       Then we log in
-  
+
   Scenario: user fails survey
       Given we are on the home page
       When we go to surveys
@@ -43,4 +43,15 @@ Feature: setting up and using core features of Aspire360
       Given we are on the investor home page
       When we go to email screen
       Then we fill out the email template correctly
-    
+
+  Scenario: Investor tries to search for a company using category that doesn't exist
+      Given we are on the investor home page
+      Then select a company category
+
+  Scenario: Investor tries to search for a company using size that doesn't exist
+      Given we are on the investor home page
+      Then select a company size
+
+  Scenario: Investor tries to search for a company using stage that doesn't exist
+      Given we are on the investor home page
+      Then select a company stage
