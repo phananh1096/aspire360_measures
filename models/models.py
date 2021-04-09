@@ -28,6 +28,7 @@ class Aspire360Survey(models.Model):
 class Entrepreneurs(models.Model):
     _name = 'aspire360.entrepreneurs'
     _description = 'Aspire360 Model for Entrepreneurs'
+    _inherit = ['mail.thread']
 
     # Fields
     name = fields.Char('User Name', help='User Name associated with Odoo Res_user', readonly=True)
@@ -45,6 +46,18 @@ class Entrepreneurs(models.Model):
     @api.model
     def create(self, vals):
         return super(Entrepreneurs, self).create(vals)
+
+    @api.model
+    def send_email(self):
+        post_vars = {'subject': "Message subject",
+        'body': "Message body",
+        'partner_ids': [(4, 8)],} # Where "4" adds the ID to the list 
+                                # of followers and "3" is the partner ID 
+        notification_ids = []
+        notification_ids.append((0,0,{
+            'res_partner_id':8,
+            'notification_type':'inbox'}))
+        self.message_post(body='This receipt has been validated!', message_type='notification', subtype='mail.mt_comment', author_id='self.env.user.partner_id.id', notification_ids=notification_ids)
     
     # Add a survey associated with Entrepreneur
     def edit_profile(self, kw, entrepreneur_id):
@@ -67,6 +80,7 @@ class Entrepreneurs(models.Model):
 class VentureCapitalists(models.Model):
     _name = 'aspire360.venturecapitalists'
     _description = 'Aspire360 Model for Investors'
+    _inherit = ['mail.thread']
 
     name = fields.Char('User Name', help='User Name associated with Odoo Res_user', readonly=True)
     user_id = fields.Integer('User ID', help='Usser ID associated with Odoo Res_user', readonly=True)
@@ -81,6 +95,30 @@ class VentureCapitalists(models.Model):
     # Method to update survey with entrepreneur id
     def update_entrepreneur(self, investor_id, entrepreneur_id,):
         #TODO: Create function
+        return
+    
+    @api.model
+    def send_convo(self, entrepreneur, subject, content):
+        # post_vars = {'subject': "Message subject",
+        # 'body': "Message body",
+        # 'partner_ids': [(4, 2)],} # Where "4" adds the ID to the list 
+        #                         # of followers and "3" is the partner ID 
+        # thread_pool = self.env['mail.thread'].search
+        # self.message_post(body='This receipt has been validated!', message_type='notification', subtype_id=self.env.ref('mail.mt_comment').id, author_id=8, notification_ids=[2])
+        # partners[0].message_post("Hello, how's it going?")
+        # print("Channels partner_id is: ", self.env.user.partner_id.id)
+        partner_id = entrepreneur.partner_id.id
+        channel_id = self.env['mail.channel'].create({'name': subject, 
+            'public': 'private', 
+            'email_send': False, 
+            'channel_partner_ids': [(4, self.env.user.partner_id.id), (4,partner_id)]})
+        channel_id.message_post(
+            subject=subject,
+            body=content,
+            message_type='notification',
+            subtype_xmlid="mail.mt_comment"
+        )
+        # entrepreneur.notify_info(message="Message from Investor: {}".format(self.name))
         return
 
 # class aspire360_measures(models.Model):

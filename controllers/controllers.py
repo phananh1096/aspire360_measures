@@ -281,6 +281,32 @@ class Aspire360(http.Controller):
             return http.request.redirect(survey_results_url)
         else:
             return http.request.render("aspire360_measures.survey_error")
+    
+    @http.route('/aspire360measures/contact_entrepreneur', auth='public',website=True, csrf=False)
+    def contact_entrepreneur(self, **kw):
+        if VALIDATION and not self.is_venturecapitalist():
+            return http.request.redirect('/aspire360measures')
+        entrepreneur_id = kw['user_id']
+        entrepreneur = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', kw["user_id"])])[0]
+        vc = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get('uid'))])[0]
+        return http.request.render('aspire360_measures.contact_form',{
+            'company_id': entrepreneur_id,
+            'to_name': "{}, Founder of {}".format(entrepreneur.name, entrepreneur.company_name),
+            "from_name": vc.name,
+        })
+
+    @http.route('/aspire360measures/send_message', auth='public',website=True, csrf=False)
+    def send_message(self, **kw):
+        if VALIDATION and not self.is_venturecapitalist():
+            return http.request.redirect('/aspire360measures')
+        entrepreneur = http.request.env['res.users'].search([('id', '=', kw["user_id"])])[0]
+        vc = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get('uid'))])
+        # Guard for testing in case no validation
+        if len(vc) > 0:
+            vc = vc[0]
+            vc.send_convo(entrepreneur, kw["message_subject"], kw["message_content"])
+        # return http.redirect
+        return http.request.redirect('/web#action=107')
 
     """ --- Helper functions --- """
     # Validation helpers
