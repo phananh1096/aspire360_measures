@@ -18,7 +18,16 @@ class Aspire360(http.Controller):
         if not self.is_entrepreneur() and not self.is_venturecapitalist():
             return http.request.redirect('/aspire360measures/setup')
         elif self.is_venturecapitalist():
-            return http.request.render('aspire360_measures.v_index')
+            entrepreneurs = list()
+            e_ids = venture_capitalists[0].get_entrepreneurs_followed()
+            for e_id in e_ids:
+                entrepreneur = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', e_id)])
+                if len(entrepreneur) > 0:
+                    entrepreneurs.append(entrepreneur[0])
+            print(entrepreneurs)
+            return http.request.render('aspire360_measures.v_index', {
+                'companies': entrepreneurs
+                })
         else:
             return http.request.render('aspire360_measures.e_index')
         # print("Entrepreneurs: ", entrepreneurs)
@@ -307,6 +316,27 @@ class Aspire360(http.Controller):
             vc.send_convo(entrepreneur, kw["message_subject"], kw["message_content"])
         # return http.redirect
         return http.request.redirect('/web#action=107')
+
+    @http.route('/aspire360measures/follow_entrepreneur', auth='public',website=True, csrf=False)   
+    def follow_entrepreneur(self, **kw):
+        # Check if function is entered - done
+        #print('Hello from follow_entrepreneur')
+        print("Params for follow_entrepreneur are: {}".format(kw))
+    
+        # Get the ID of the VC - done
+        venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get ('uid'))])
+        print('Venture Capitalist ID - ', venture_capitalists)
+    
+        # Get the ID of the entrepreneur - done
+        entrepreneur_id = int(kw["user_id"])
+        #entrepreneur = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
+        print('Entrepreneur - ', entrepreneur_id)
+    
+        # Somehow combine the two - done
+        venture_capitalists.follow_entrepreneur(entrepreneur_id)       
+    
+        return http.request.redirect('/aspire360measures')
+
 
     """ --- Helper functions --- """
     # Validation helpers
