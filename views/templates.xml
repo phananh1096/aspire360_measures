@@ -196,7 +196,7 @@
                 <t t-set="title">Aspire360Measures</t>
                 <div class="oe_structure">
                     <div class="container">
-                        <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem;" class="w3-circle" id="aspire360_logo"/>
+                        <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo"/>
                         <div class="row justify-content-center" style="margin-top:2rem;" > 
                             <div class="col-8" style="font-family: Poppins; font-style: normal; font-weight: bold; text-align: center;">
                                 <h1 id="setup_title">Are you a Founder or an Investor?</h1>
