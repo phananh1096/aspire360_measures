@@ -8,7 +8,7 @@
                     <div style="width: 100%;">
                         <div class="col-8" style="font-family: Poppins; font-style: normal; font-weight: bold; text-align: left;">
                             <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo" />
-                            <h1 id="setup_title">Welcome Back!</h1>
+                            <h1 id="setup_title">Welcome Back, <t t-esc = "entrepreneur.name"/>!</h1>
                         </div>
                         <div style="margin-left: 88%; height: 100px;">
                             <p style="color:grey;">
@@ -33,6 +33,26 @@
                                 <a t-attf-href="/aspire360measures/survey/sell" class="btn btn-primary stretched-link">Start Assessment</a>
                             </div>
                         </div>
+
+                        <div class="card" style="width: 25rem; height: 20rem;">
+                            <div class="card-body">
+                                <h4 class="card-title">Daily Objectives</h4>
+                                <div t-if="len(objectives)==0"><p>You don't have any goals yet. Add some goals!</p></div>
+                                <div t-if="len(objectives)!=0"><p>You have <t t-esc="len(objectives)"/> goals left today!</p></div>
+                                <div t-foreach="objectives" t-as="objective">
+                                    <p>
+                                        <t t-esc = "objective.objective_text" />
+                                    </p>
+                                </div>
+
+
+                                <form role="form" action="/aspire360measures/add_objective">   
+                                   <input type="text" name="new_objective" t-att-value="new_objective"/>
+                                   <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Add Task</button>
+                               </form>
+                            </div>
+                        </div>
+
                         <div style="margin-left: 8.5%; height: 100px;float: left;">
                             <form role="form" action="/aspire360measures/entrepreneur_edit_profile">
                                 <div class="clearfix oe_login_buttons">

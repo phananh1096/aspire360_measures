@@ -20,7 +20,13 @@ class Aspire360(http.Controller):
         elif self.is_venturecapitalist():
             return http.request.render('aspire360_measures.v_index')
         else:
-            return http.request.render('aspire360_measures.e_index')
+
+            objectives = http.request.env['aspire360.dailyobjectives']
+            latest_objectives = objectives.get_objectives(request.env.context.get ('uid'))
+            return http.request.render('aspire360_measures.e_index', {
+                'entrepreneur' : entrepreneurs[0],
+                'objectives' : latest_objectives
+            })
         # print("Entrepreneurs: ", entrepreneurs)
         # print("Entrepreneurs: ", venture_capitalists)
         # print("User uid: ", request.env.user)
@@ -307,6 +313,20 @@ class Aspire360(http.Controller):
             vc.send_convo(entrepreneur, kw["message_subject"], kw["message_content"])
         # return http.redirect
         return http.request.redirect('/web#action=107')
+
+    @http.route('/aspire360measures/add_objective', auth='public', website=True, csrf = False)
+    def add_objective(self, **kw):
+        print('Arguments of add_objective function - ', kw)
+
+        
+        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
+        objectives = http.request.env['aspire360.dailyobjectives']
+        objective_text = kw['new_objective']
+        new_record = {'objective_text': objective_text,
+                      'e_id':request.env.context.get ('uid'),
+                      'objective_status' : False}
+        objectives.create(new_record)
+        return http.request.redirect('/aspire360measures')
 
     """ --- Helper functions --- """
     # Validation helpers
