@@ -6,7 +6,7 @@ import base64
 import time
 
 # Validation parameter. Turn off when developing and on when testing
-VALIDATION = False
+VALIDATION = True
 
 class Aspire360(http.Controller):
     @http.route('/aspire360measures/', auth='public',website=True)
