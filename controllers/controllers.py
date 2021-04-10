@@ -18,9 +18,26 @@ class Aspire360(http.Controller):
         if not self.is_entrepreneur() and not self.is_venturecapitalist():
             return http.request.redirect('/aspire360measures/setup')
         elif self.is_venturecapitalist():
-            return http.request.render('aspire360_measures.v_index')
+            entrepreneurs = list()
+            e_ids = venture_capitalists[0].get_entrepreneurs_followed()
+            for e_id in e_ids:
+                entrepreneur = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', e_id)])
+                if len(entrepreneur) > 0:
+                    entrepreneurs.append(entrepreneur[0])
+            print(entrepreneurs)
+            return http.request.render('aspire360_measures.v_index', {
+                'companies': entrepreneurs
+                })
         else:
-            return http.request.render('aspire360_measures.e_index')
+
+            objectives = http.request.env['aspire360.dailyobjectives']
+            latest_objectives = objectives.get_objectives(request.env.context.get ('uid'))
+            for obj in latest_objectives:
+                print('Objective status - ', obj.objective_status)
+            return http.request.render('aspire360_measures.e_index', {
+                'entrepreneur' : entrepreneurs[0],
+                'objectives' : latest_objectives
+            })
         # print("Entrepreneurs: ", entrepreneurs)
         # print("Entrepreneurs: ", venture_capitalists)
         # print("User uid: ", request.env.user)
@@ -307,6 +324,48 @@ class Aspire360(http.Controller):
             vc.send_convo(entrepreneur, kw["message_subject"], kw["message_content"])
         # return http.redirect
         return http.request.redirect('/web#action=107')
+
+    @http.route('/aspire360measures/follow_entrepreneur', auth='public',website=True, csrf=False)   
+    def follow_entrepreneur(self, **kw):
+        # Check if function is entered - done
+        #print('Hello from follow_entrepreneur')
+        print("Params for follow_entrepreneur are: {}".format(kw))
+    
+        # Get the ID of the VC - done
+        venture_capitalists = http.request.env['aspire360.venturecapitalists'].search([('user_id', '=', request.env.context.get ('uid'))])
+        print('Venture Capitalist ID - ', venture_capitalists)
+    
+        # Get the ID of the entrepreneur - done
+        entrepreneur_id = int(kw["user_id"])
+        #entrepreneur = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
+        print('Entrepreneur - ', entrepreneur_id)
+    
+        # Somehow combine the two - done
+        venture_capitalists.follow_entrepreneur(entrepreneur_id)       
+    
+        return http.request.redirect('/aspire360measures')
+
+
+    @http.route('/aspire360measures/add_objective', auth='public', website=True, csrf = False)
+    def add_objective(self, **kw):
+        print('Arguments of add_objective function - ', kw)
+        # Arguments of add_objective function -  {'task': 'on', 'new_objective': ''}
+        
+        entrepreneurs = http.request.env['aspire360.entrepreneurs'].search([('user_id', '=', request.env.context.get ('uid'))])
+        objectives = http.request.env['aspire360.dailyobjectives']
+        objective_text = kw['new_objective']
+        if objective_text:
+            new_record = {'objective_text': objective_text,
+                        'e_id':request.env.context.get ('uid'),
+                        'objective_status' : False}
+            objectives.create(new_record)
+        else:
+            objectives_completed = []
+            for key,value in kw.items():
+                if value == 'on':
+                    objectives_completed.append(key)
+            objectives.update_objectives(objectives_completed)
+        return http.request.redirect('/aspire360measures')
 
     """ --- Helper functions --- """
     # Validation helpers

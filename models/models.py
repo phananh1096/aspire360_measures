@@ -77,6 +77,31 @@ class Entrepreneurs(models.Model):
                 record.company_funding = kw["funding_stage"]
         return
 
+class DailyObjectives(models.Model):
+    _name = 'aspire360.dailyobjectives'
+    _description = 'Aspire360 Model for entrepreneur objectives'
+
+    e_id = fields.Char('Entrepreneur Id', help='Id associated with Entrepreneur', readonly=True)
+    objective_text = fields.Char('Objective Text', help='The actual objective', readonly=True)
+    objective_status = fields.Boolean('Objective Status', help='Status of the objective')
+
+    # Add a survey associated with Entrepreneur
+    @api.model
+    def create(self, vals):
+        return super(DailyObjectives, self).create(vals)
+    
+    def get_objectives(self, e_id_arg):
+        records = self.env['aspire360.dailyobjectives'].search([('e_id', '=', e_id_arg)])
+        print('Records = ', records)
+        return records
+
+    def update_objectives(self, objs):
+        print('Updating Objectives...')
+        for obj in objs:
+            records = self.env['aspire360.dailyobjectives'].search([('objective_text', '=', obj)])
+            if records:
+                records.objective_status = True
+
 class VentureCapitalists(models.Model):
     _name = 'aspire360.venturecapitalists'
     _description = 'Aspire360 Model for Investors'
@@ -86,7 +111,8 @@ class VentureCapitalists(models.Model):
     user_id = fields.Integer('User ID', help='Usser ID associated with Odoo Res_user', readonly=True)
     # Relation Fields
     entrepreneur = fields.Many2many('aspire360.entrepreneurs', string='Entrpreneur or Company', ondelete='cascade', required=False)
-
+    entrepreneurs_followed = fields.Char('Entrepreneurs Id', help='comma separated list of entrepreneurs that VC follows')
+    
     # Add a survey associated with Entrepreneur
     @api.model
     def create(self, vals):
@@ -120,6 +146,35 @@ class VentureCapitalists(models.Model):
         )
         # entrepreneur.notify_info(message="Message from Investor: {}".format(self.name))
         return
+
+    def follow_entrepreneur(self, entrepreneur_id):
+       # Check if you can access this function
+       print('Can enter the function')
+       print('Entrepreneurs followed', self.entrepreneurs_followed)
+       entrepreneur_id = str(entrepreneur_id)
+ 
+       if self.entrepreneurs_followed == False:
+           self.entrepreneurs_followed = entrepreneur_id
+       else:
+           e_list = self.entrepreneurs_followed.split(' ')
+           print(e_list)
+           e_set = set(e_list)
+           print(e_set)
+           if entrepreneur_id in e_set:
+               print('Entrepreneur already being followed')
+           else:
+               e_set.add(entrepreneur_id)
+               new_e_list = list(e_set)
+               new_string = ' '.join(new_e_list)
+               self.entrepreneurs_followed = new_string
+       print('Updated entrepreneurs followed', self.entrepreneurs_followed)
+       return
+ 
+    def get_entrepreneurs_followed(self):
+        if self.entrepreneurs_followed == False:
+            return []
+        else:
+            return self.entrepreneurs_followed.split(' ')
 
 # class aspire360_measures(models.Model):
 #     _name = 'aspire360_measures.aspire360_measures'
