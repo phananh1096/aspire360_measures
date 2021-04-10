@@ -39,16 +39,22 @@
                                 <h4 class="card-title">Daily Objectives</h4>
                                 <div t-if="len(objectives)==0"><p>You don't have any goals yet. Add some goals!</p></div>
                                 <div t-if="len(objectives)!=0"><p>You have <t t-esc="len(objectives)"/> goals left today!</p></div>
-                                <div t-foreach="objectives" t-as="objective">
-                                    <p>
-                                        <t t-esc = "objective.objective_text" />
-                                    </p>
-                                </div>
-
 
                                 <form role="form" action="/aspire360measures/add_objective">   
-                                   <input type="text" name="new_objective" t-att-value="new_objective"/>
-                                   <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Add Task</button>
+                                <div t-foreach="objectives" t-as="objective">
+                                        <!-- <input type="checkbox" id="objective.objective_text" name="objective.objective_text" checked="objective.objective_status"/> -->
+                                        <!-- <label for="objective.objective_text"> -->
+                                            <!-- <t t-esc = "objective.objective_text" /> -->
+                                        <!-- </label> -->
+                                        <t t-esc = "objective.objective_text" />
+                                </div>
+
+                                <div>
+                                   <input type="text" name="new_objective" t-att-value="new_objective" placeholder="Add a new objective..."/>
+                                </div>
+                                <div>   
+                                   <button type="submit" class="btn btn-primary clearfix oe_login_buttons">Update Objectives</button>
+                                </div>
                                </form>
                             </div>
                         </div>
