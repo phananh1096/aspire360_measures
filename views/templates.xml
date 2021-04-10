@@ -83,6 +83,56 @@
                         <a t-attf-href="/aspire360measures/email">
                             Email Entrepreneurs</a>
                     </p>
+
+
+                    <h2>Entrepreneurs you follow</h2>
+                    <div t-if="len(companies)==0"><p>Sorry, no companies found..</p></div>
+                    <div t-foreach="companies" t-as="company" class="alert alert-info mt16">
+                        <!-- <form role="form" > -->
+                            <form role="form" action="/aspire360measures/display_fundraise">   
+                                <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                                <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Fundraising Results</button>
+                            </form>
+                            <form role="form" action="/aspire360measures/display_sell">   
+                                <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                                <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Sell Results</button>
+                            </form>
+                            <form role="form" action="/aspire360measures/follow_entrepreneur">   
+                                <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                                <input type="hidden" name="companies_list" t-att-value="companies"/>
+                                <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Follow</button>
+                            </form>
+                            <p>
+                                <h2 t-esc = "company.company_name" />
+                            </p>
+                            <p>
+                                <a>Founder: </a>
+                                <a t-esc = "company.name" />
+                            </p>
+                            <p>
+                                <a>Industry: </a>
+                                <a t-esc = "company.company_industry" />
+                            </p>
+                            <p>
+                                <a>Funding: </a>
+                                <a t-esc = "company.company_funding" />
+                            </p>
+                            <p>
+                                <a>Size: </a>
+                                <a t-esc = "company.company_size" />
+                            </p>
+                            <!-- <t t-esc = "company.name" />
+                            <t t-esc = "company.user_id" />  -->
+                            <!-- <div class="clearfix oe_login_buttons"> -->
+
+                            <!-- </div> -->
+                        <!-- </form> -->
+                        <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
+                        <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p>
+                    </div>
+
+
+
                     <h2>Search for entrepreneurs/companies</h2>
                     <form role="form" action="/aspire360measures/search" method="POST">
                         <input type="hidden" name="company_info" t-att-value="request.csrf_token()" />
@@ -541,7 +591,11 @@
                             <input type="hidden" name="user_id" t-att-value="company.user_id" />
                             <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Sell Results</button>
                         </form>
-
+                        <form role="form" action="/aspire360measures/follow_entrepreneur">   
+                            <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                            <input type="hidden" name="companies_list" t-att-value="companies"/>
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Follow</button>
+                        </form>
                         <p>
                             <h2 t-esc="company.company_name" />
                         </p>
