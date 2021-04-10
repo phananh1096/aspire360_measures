@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_aspire360_entrepreneurs,access_aspire360_entrepreneurs,model_aspire360_entrepreneurs,,1,1,1,1
 access_aspire360_venturecapitalists,access_aspire360_venturecapitalists,model_aspire360_venturecapitalists,,1,1,1,1
+access_aspire360_dailyobjectives,access_aspire360_dailyobjectives,model_aspire360_dailyobjectives,,1,1,1,1
+

@@ -4,7 +4,7 @@
         <t t-call="website.layout">
             <t t-set="title">Aspire360Measures</t>
             <div class="oe_structure">
-                <div class="container" style="margin-top: 5%">
+                <div class="container">
                     <div style="width: 100%;">
                         <div class="col-8" style="font-family: Poppins; font-style: normal; font-weight: bold; text-align: left;">
                             <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo" />
@@ -415,55 +415,55 @@
                         <!-- >>>>>>>>>>>>>> -->
                     </div>
                 </div>
-            </t>
-        </template>
+            </div>
+        </t>
+    </template>
         
-        <template id="setup">
-            <xpath expr=".">
-                <!-- <script type="text/javascript" src="/aspire360_measures/static/src/js/test.js"/> -->
-                <link href = "/aspire360_measures/static/src/css/styling.scss" rel = "stylesheet" type = "text/css" />
-            </xpath>
-            <title>Aspire360Measures</title>
-            <t t-call="website.layout">
-                <t t-set="title">Aspire360Measures</t>
-                <div class="oe_structure">
-                    <div class="container">
-                        <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo"/>
-                        <div class="row justify-content-center" style="margin-top:2rem;" > 
-                            <div class="col-8" style="font-family: Poppins; font-style: normal; font-weight: bold; text-align: center;">
-                                <h1 id="setup_title">Are you a Founder or an Investor?</h1>
-                            </div>
+    <template id="setup">
+        <xpath expr=".">
+            <!-- <script type="text/javascript" src="/aspire360_measures/static/src/js/test.js"/> -->
+            <link href = "/aspire360_measures/static/src/css/styling.scss" rel = "stylesheet" type = "text/css" />
+        </xpath>
+        <title>Aspire360Measures</title>
+        <t t-call="website.layout">
+            <t t-set="title">Aspire360Measures</t>
+            <div class="oe_structure">
+                <div class="container">
+                    <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo"/>
+                    <div class="row justify-content-center" style="margin-top:2rem;" > 
+                        <div class="col-8" style="font-family: Poppins; font-style: normal; font-weight: bold; text-align: center;">
+                            <h1 id="setup_title">Are you a Founder or an Investor?</h1>
                         </div>
                     </div>
-                    <div class="row justify-content-center" style="margin-top:2rem;">
-                        <div class="col-4">
-                            <div class="card" style="width: 18rem; height: 35rem;">
-                                <img src="/aspire360_measures/static/src/img/setup_founder_logo.png" style="padding-top: 2rem;" class="card-img-top" alt="..." />
-                                <div class="card-body">
-                                    <h4 class="card-title">Founder</h4>
-                                    <p class="card-text">I am looking to or have already founded a company and I am currently looking for investors for my company.</p>
-                                    <a t-attf-href="/aspire360measures/setup/e" class="btn btn-primary stretched-link">Select</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="card" style="width: 18rem; height: 35rem;">
-                                <img src="/aspire360_measures/static/src/img/setup_vc_logo.png" style="padding-top: 1rem;" class="card-img-top" alt="..." />
-                                <div class="card-body">
-                                    <h4 class="card-title">Investor</h4>
-                                    <p class="card-text">I am an investor currently seeking for early-stage companies to invest in. I will be assessing companies based on fundraising and sell metrics</p>
-                                    <a t-attf-href="/aspire360measures/setup/v" class="btn btn-primary stretched-link">Select</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <p><a t-attf-href="/aspire360measures/setup/e">
-                            Entrepreneur/CEO</a>
-                        </p>
-                        <p><a t-attf-href="/aspire360measures/setup/v">
-                            Investor</a>
-                        </p> -->
                 </div>
+                <div class="row justify-content-center" style="margin-top:2rem;">
+                    <div class="col-4">
+                        <div class="card" style="width: 18rem; height: 35rem;">
+                            <img src="/aspire360_measures/static/src/img/setup_founder_logo.png" style="padding-top: 2rem;" class="card-img-top" alt="..." />
+                            <div class="card-body">
+                                <h4 class="card-title">Founder</h4>
+                                <p class="card-text">I am looking to or have already founded a company and I am currently looking for investors for my company.</p>
+                                <a t-attf-href="/aspire360measures/setup/e" class="btn btn-primary stretched-link">Select</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card" style="width: 18rem; height: 35rem;">
+                            <img src="/aspire360_measures/static/src/img/setup_vc_logo.png" style="padding-top: 1rem;" class="card-img-top" alt="..." />
+                            <div class="card-body">
+                                <h4 class="card-title">Investor</h4>
+                                <p class="card-text">I am an investor currently seeking for early-stage companies to invest in. I will be assessing companies based on fundraising and sell metrics</p>
+                                <a t-attf-href="/aspire360measures/setup/v" class="btn btn-primary stretched-link">Select</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <p><a t-attf-href="/aspire360measures/setup/e">
+                        Entrepreneur/CEO</a>
+                    </p>
+                    <p><a t-attf-href="/aspire360measures/setup/v">
+                        Investor</a>
+                    </p> -->
             </div>
         </t>
     </template>
