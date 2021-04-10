@@ -77,6 +77,31 @@ class Entrepreneurs(models.Model):
                 record.company_funding = kw["funding_stage"]
         return
 
+class DailyObjectives(models.Model):
+    _name = 'aspire360.dailyobjectives'
+    _description = 'Aspire360 Model for entrepreneur objectives'
+
+    e_id = fields.Char('Entrepreneur Id', help='Id associated with Entrepreneur', readonly=True)
+    objective_text = fields.Char('Objective Text', help='The actual objective', readonly=True)
+    objective_status = fields.Boolean('Objective Status', help='Status of the objective')
+
+    # Add a survey associated with Entrepreneur
+    @api.model
+    def create(self, vals):
+        return super(DailyObjectives, self).create(vals)
+    
+    def get_objectives(self, e_id_arg):
+        records = self.env['aspire360.dailyobjectives'].search([('e_id', '=', e_id_arg)])
+        print('Records = ', records)
+        return records
+
+    def update_objectives(self, objs):
+        print('Updating Objectives...')
+        for obj in objs:
+            records = self.env['aspire360.dailyobjectives'].search([('objective_text', '=', obj)])
+            if records:
+                records.objective_status = True
+
 class VentureCapitalists(models.Model):
     _name = 'aspire360.venturecapitalists'
     _description = 'Aspire360 Model for Investors'
