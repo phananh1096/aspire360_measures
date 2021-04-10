@@ -52,6 +52,8 @@ class VentureCapitalists(models.Model):
     user_id = fields.Integer('User ID', help='Usser ID associated with Odoo Res_user', readonly=True)
     # Relation Fields
     entrepreneur = fields.Many2many('aspire360.entrepreneurs', string='Entrpreneur or Company', ondelete='cascade', required=False)
+    
+    entrepreneurs_followed = fields.Char('Entrepreneurs Id', help='comma separated list of entrepreneurs that VC follows')
 
     # Add a survey associated with Entrepreneur
     @api.model
@@ -62,6 +64,32 @@ class VentureCapitalists(models.Model):
     def update_entrepreneur(self, investor_id, entrepreneur_id,):
         #TODO: Create function
         return
+
+    def follow_entrepreneur(self, entrepreneur_id):
+        # Check if you can access this function
+        print('Can enter the function')
+        print('Entrepreneurs followed', self.entrepreneurs_followed)
+        entrepreneur_id = str(entrepreneur_id)
+
+        if self.entrepreneurs_followed == False:
+            self.entrepreneurs_followed = entrepreneur_id
+        else:
+            e_list = self.entrepreneurs_followed.split(' ')
+            print(e_list)
+            e_set = set(e_list)
+            print(e_set)
+            if entrepreneur_id in e_set:
+                print('Entrepreneur already being followed')
+            else:
+                e_set.add(entrepreneur_id)
+                new_e_list = list(e_set)
+                new_string = ' '.join(new_e_list)
+                self.entrepreneurs_followed = new_string
+        print('Updated entrepreneurs followed', self.entrepreneurs_followed)
+        return
+
+    def get_entrepreneurs_followed(self):
+        return self.entrepreneurs_followed.split(' ')
 
 # class aspire360_measures(models.Model):
 #     _name = 'aspire360_measures.aspire360_measures'

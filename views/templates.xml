@@ -35,6 +35,132 @@
                         <p>
                             TO BE UPDATED
                         </p>
+<<<<<<< Updated upstream
+=======
+                        <h2>Entrepreneurs you follow</h2>
+                        <div t-if="len(companies)==0"><p>Sorry, no companies found..</p></div>
+                        <div t-foreach="companies" t-as="company" class="alert alert-info mt16">
+                            <!-- <form role="form" > -->
+                                <form role="form" action="/aspire360measures/display_fundraise">    
+                                    <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                                    <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Fundraising Results</button>
+                                </form>
+                                <form role="form" action="/aspire360measures/display_sell">    
+                                    <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                                    <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Sell Results</button>
+                                </form>
+                                <form role="form" action="/aspire360measures/follow_entrepreneur">    
+                                    <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                                    <input type="hidden" name="companies_list" t-att-value="companies"/>
+                                    <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Follow</button>
+                                </form>
+                                <p>
+                                    <h2 t-esc = "company.company_name" /> 
+                                </p>
+                                <p>
+                                    <a>Founder: </a>
+                                    <a t-esc = "company.name" /> 
+                                </p>
+                                <p>
+                                    <a>Industry: </a>
+                                    <a t-esc = "company.company_industry" /> 
+                                </p>
+                                <p>
+                                    <a>Funding: </a>
+                                    <a t-esc = "company.company_funding" /> 
+                                </p>
+                                <p>
+                                    <a>Size: </a>
+                                    <a t-esc = "company.company_size" /> 
+                                </p>
+                                <!-- <t t-esc = "company.name" /> 
+                                <t t-esc = "company.user_id" />  -->
+                                <!-- <div class="clearfix oe_login_buttons"> -->
+
+                                <!-- </div> -->
+                            <!-- </form> -->
+                            <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
+                            <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p>
+                        </div>
+                        <h2>Search for entrepreneurs/companies</h2>
+                        <form role="form" action="/aspire360measures/search" method="POST">
+                            <input type="hidden" name="company_info" t-att-value="request.csrf_token()"/>
+                            <div class="form-group">
+                                <label for="company_name" class="control-label">Company Name </label>
+                                <input type="text" name="company_name" id="patient_name" class ="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="company_industry">Please select the industry that your company belongs to:</label>
+                                <select id="company_industry" name="industry">
+                                    <option value="All">All</option>
+                                    <option value="Administrative Services">Administrative Services</option>
+                                    <option value="Advertising">Advertising</option>
+                                    <option value="Agriculture and Farming">Agriculture and Farming</option>
+                                    <option value="Artificial Intelligence">Artificial Intelligence</option> 
+                                    <option value="Biotechnology">Biotechnology</option> 
+                                    <option value="Clothing and Apparel">Clothing and Apparel</option>  
+                                    <option value="Commerce and Shopping">Commerce and Shopping</option>  
+                                    <option value="Consumer Electronics">Consumer Electronics</option>
+                                    <option value="Consumer Goods">Consumer Goods</option>  
+                                    <option value="Content and Publishing">Content and Publishing</option>  
+                                    <option value="Data and Analytics">Data and Analytics</option> 
+                                    <option value="Design">Design</option> 
+                                    <option value="Education">Education</option>  
+                                    <option value="Energy">Energy</option> 
+                                    <option value="Financial Services">Financial Services</option>     
+                                    <option value="Food and Beverage">Food and Beverage</option>
+                                    <option value="Gaming">Gaming</option>
+                                    <option value="Government and Military">Government and Military</option>
+                                    <option value="Hardware">Hardware</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Information Technology">Information Technology</option>
+                                    <option value="Manufacturing">Manufacturing</option>
+                                    <option value="Media and Entertainment">Media and Entertainment</option>
+                                    <option value="Navigation and Mapping">Navigation and Mapping</option>
+                                    <option value="Others">Others</option>
+                                    <option value="Payments">Payments</option>
+                                    <option value="Platforms">Platforms</option>
+                                    <option value="Privacy and Security">Privacy and Security</option>
+                                    <option value="Professional Services">Professional Services</option>
+                                    <option value="Real Estate">Real Estate</option>
+                                    <option value="Sales and Marketing">Sales and Marketing</option>
+                                    <option value="Science and Engineering">Science and Engineering</option>
+                                    <option value="Software">Software</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Sustainability">Sustainability</option>
+                                    <option value="Telecommunications">Telecommunications</option>
+                                    <option value="Transportation">Transportation</option>
+                                    <option value="Travel and Tourism">Travel and Tourism</option>
+                                    <option value="Video">Video</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="company_employees">Please indicate your company size:</label>
+                                <select id="company_employees" name="employees">
+                                    <option value="All">All</option>
+                                    <option value="1-10 employees">1-10 employees</option>
+                                    <option value="11-50 employees">11-50 employees</option>
+                                    <option value="51-200 employees">51-200 employees</option>
+                                    <option value="200+ employees">200+ employees</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="company_funding_stage">Please indicate what funding stage your company is in:</label>
+                                <select id="company_funding_stage" name="funding_stage">
+                                    <option value="All">All</option>
+                                    <option value="Pre-seed">Pre-seed</option>
+                                    <option value="Seed">Seed</option>
+                                    <option value="Stage A">Stage A</option>
+                                    <option value="Stage B">Stage B</option>
+                                    <option value="Stage C">Stage C</option>
+                                    <option value="Stage D/E/Others">Stage D/E/Others</option>
+                                </select>
+                            </div>
+                            <div class="clearfix oe_login_buttons">
+                                <button type="submit" class="btn btn-primary pull-left">Search</button>
+                            </div>
+                        </form>
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </t>
@@ -65,7 +191,66 @@
                 <div class="oe_structure"/>
                 <div class="oe_structure">
                     <div class="container">
+<<<<<<< Updated upstream
                         <h3 t-field="person.name"/>
+=======
+                        <!-- <div>
+                            <form role="form" action="/aspire360measures">
+                                <button type="submit" class="btn btn-primary pull-left clearfix oe_login_buttons">Back</button>
+                            </form>
+                        </div>
+                        <br/>
+                        <br/> -->
+                        <br/>
+                        <div>
+                            <h1>Search Results</h1>
+                        </div>
+                        <div t-if="len(companies)==0"><p>You don't follow any entrepreneurs right now</p></div>
+                        <div t-foreach="companies" t-as="company" class="alert alert-info mt16">
+                            <!-- <form role="form" > -->
+                                <form role="form" action="/aspire360measures/display_fundraise">    
+                                    <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                                    <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Fundraising Results</button>
+                                </form>
+                                <form role="form" action="/aspire360measures/display_sell">    
+                                    <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                                    <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Sell Results</button>
+                                </form>
+                                <form role="form" action="/aspire360measures/follow_entrepreneur">    
+                                    <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                                    <input type="hidden" name="companies_list" t-att-value="companies"/>
+                                    <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Follow</button>
+                                </form>
+                                <p>
+                                    <h2 t-esc = "company.company_name" /> 
+                                </p>
+                                <p>
+                                    <a>Founder: </a>
+                                    <a t-esc = "company.name" /> 
+                                </p>
+                                <p>
+                                    <a>Industry: </a>
+                                    <a t-esc = "company.company_industry" /> 
+                                </p>
+                                <p>
+                                    <a>Funding: </a>
+                                    <a t-esc = "company.company_funding" /> 
+                                </p>
+                                <p>
+                                    <a>Size: </a>
+                                    <a t-esc = "company.company_size" /> 
+                                </p>
+                                <!-- <t t-esc = "company.name" /> 
+                                <t t-esc = "company.user_id" />  -->
+                                <!-- <div class="clearfix oe_login_buttons"> -->
+
+                                <!-- </div> -->
+                            <!-- </form> -->
+                            <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
+                            <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p>
+                        </div>
+                        <!-- <h3 t-field="person.name"/>
+>>>>>>> Stashed changes
                         <p>Last modified: <i t-field="person.write_date" t-options='{"widget": "relative"}'/></p>
                         <div t-field="person.biography"/>
                         <div class="col-md-7 col-sm-8">
