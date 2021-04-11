@@ -17,7 +17,7 @@
                         </div>
                     </div>
 
-                    <div class="row justify-content-center" style="margin-bottom:3rem;">
+                    <div class="row justify-content-left" style="margin-bottom:1rem; margin-left:2rem">
                         <div class="card" style="width: 25rem; height: 20rem;margin-right: 1rem;">
                             <div class="card-body">
                                 <img src="/aspire360_measures/static/src/img/fundraise_logo.png" width = "20%" style="width: 50%" class="card-img-top" alt="..." />
@@ -33,7 +33,15 @@
                                 <a t-attf-href="/aspire360measures/survey/sell" class="btn btn-primary stretched-link">Start Assessment</a>
                             </div>
                         </div>
-
+                        <div style="margin-left: 8.5%; height: 100px;float: left;">
+                            <form role="form" action="/aspire360measures/entrepreneur_edit_profile">
+                                <div class="clearfix oe_login_buttons">
+                                    <button type="submit" class="btn btn-primary pull-left" style="background-color: Transparent;background-repeat:no-repeat;border: none;cursor:pointer;overflow: hidden;outline:none;color:grey">Edit Profile</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row justify-content-left" style="margin-bottom:1rem; margin-left:2rem">
                         <div class="card" style="width: 25rem; height: 20rem;">
                             <div class="card-body">
                                 <h4 class="card-title">Daily Objectives</h4>
@@ -58,14 +66,6 @@
                                </form>
                             </div>
                         </div>
-
-                        <div style="margin-left: 8.5%; height: 100px;float: left;">
-                            <form role="form" action="/aspire360measures/entrepreneur_edit_profile">
-                                <div class="clearfix oe_login_buttons">
-                                    <button type="submit" class="btn btn-primary pull-left" style="background-color: Transparent;background-repeat:no-repeat;border: none;cursor:pointer;overflow: hidden;outline:none;color:grey">Edit Profile</button>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -78,57 +78,62 @@
             <t t-set="title">Aspire360Measures</t>
             <div class="oe_structure">
                 <div class="container">
+                    <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo"/>
                     <h1>Investor Homepage</h1>
-                    <p>
-                        <a t-attf-href="/aspire360measures/email">
-                            Email Entrepreneurs</a>
-                    </p>
+                    <!-- <p> -->
+                        <!-- <a t-attf-href="/aspire360measures/email">
+                            Email Entrepreneurs</a> -->
+                    <!-- </p> -->
 
 
                     <h2>Entrepreneurs you follow</h2>
-                    <div t-if="len(companies)==0"><p>Sorry, no companies found..</p></div>
-                    <div t-foreach="companies" t-as="company" class="alert alert-info mt16">
+                    <div t-foreach="companies" t-as="company" class="alert alert-info mt20">
                         <!-- <form role="form" > -->
-                            <form role="form" action="/aspire360measures/display_fundraise">   
-                                <input type="hidden" name="user_id" t-att-value="company.user_id"/>
-                                <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Fundraising Results</button>
-                            </form>
-                            <form role="form" action="/aspire360measures/display_sell">   
-                                <input type="hidden" name="user_id" t-att-value="company.user_id"/>
-                                <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Sell Results</button>
-                            </form>
-                            <form role="form" action="/aspire360measures/follow_entrepreneur">   
-                                <input type="hidden" name="user_id" t-att-value="company.user_id"/>
-                                <input type="hidden" name="companies_list" t-att-value="companies"/>
-                                <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Follow</button>
-                            </form>
-                            <p>
-                                <h2 t-esc = "company.company_name" />
-                            </p>
-                            <p>
-                                <a>Founder: </a>
-                                <a t-esc = "company.name" />
-                            </p>
-                            <p>
-                                <a>Industry: </a>
-                                <a t-esc = "company.company_industry" />
-                            </p>
-                            <p>
-                                <a>Funding: </a>
-                                <a t-esc = "company.company_funding" />
-                            </p>
-                            <p>
-                                <a>Size: </a>
-                                <a t-esc = "company.company_size" />
-                            </p>
+                        <form></form>
+                        <form role="form" action="/aspire360measures/display_fundraise">   
+                            <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Fundraising Results</button>
+                        </form>
+                        <form role="form" action="/aspire360measures/display_sell">   
+                            <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Sell Results</button>
+                        </form>
+                        <form role="form" action="/aspire360measures/follow_entrepreneur">   
+                            <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                            <input type="hidden" name="companies_list" t-att-value="companies"/>
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Follow</button>
+                        </form>
+                        <form role="form" action="/aspire360measures/contact_entrepreneur">
+                            <input type="hidden" name="user_id" t-att-value="company.user_id" />
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Contact</button>
+                        </form>
+                        <p>
+                            <h2 t-esc = "company.company_name" />
+                        </p>
+                        <p>
+                            <a>Founder: </a>
+                            <a t-esc = "company.name" />
+                        </p>
+                        <p>
+                            <a>Industry: </a>
+                            <a t-esc = "company.company_industry" />
+                        </p>
+                        <p>
+                            <a>Funding: </a>
+                            <a t-esc = "company.company_funding" />
+                        </p>
+                        <p>
+                            <a>Size: </a>
+                            <a t-esc = "company.company_size" />
+                        </p>
                             <!-- <t t-esc = "company.name" />
                             <t t-esc = "company.user_id" />  -->
                             <!-- <div class="clearfix oe_login_buttons"> -->
 
                             <!-- </div> -->
                         <!-- </form> -->
-                        <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
-                        <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p>
+                        <!-- <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
+                        <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p> -->
                     </div>
 
 
@@ -339,10 +344,6 @@
                                 <button type="submit" class="btn btn-primary pull-left">Submit</button>
                             </div>
                         </form>
-                        <div>
-                            <a t-attf-href="/aspire360measures/email">
-                            Email Entrepreneurs</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -596,6 +597,10 @@
                             <input type="hidden" name="companies_list" t-att-value="companies"/>
                             <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Follow</button>
                         </form>
+                        <form role="form" action="/aspire360measures/contact_entrepreneur">
+                            <input type="hidden" name="user_id" t-att-value="company.user_id" />
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Contact</button>
+                        </form>
                         <p>
                             <h2 t-esc="company.company_name" />
                         </p>
@@ -615,18 +620,15 @@
                             <a>Size: </a>
                             <a t-esc="company.company_size" />
                         </p>
-                        <form role="form" action="/aspire360measures/contact_entrepreneur">
-                            <input type="hidden" name="user_id" t-att-value="company.user_id" />
-                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Contact</button>
-                        </form>
+                        
                         <!-- <t t-esc = "company.name" /> 
                                 <t t-esc = "company.user_id" />  -->
                         <!-- <div class="clearfix oe_login_buttons"> -->
 
                         <!-- </div> -->
                         <!-- </form> -->
-                        <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
-                        <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p>
+                        <!-- <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
+                        <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p> -->
                     </div>
                     <!-- <h3 t-field="person.name"/>
                         <p>Last modified: <i t-field="person.write_date" t-options='{"widget": "relative"}'/></p>
