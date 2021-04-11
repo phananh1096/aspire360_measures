@@ -85,8 +85,9 @@
                             Email Entrepreneurs</a> -->
                     <!-- </p> -->
 
-
-                    <h2>Entrepreneurs you follow</h2>
+                    <div style="margin-top:5rem; margin-botton:5rem">
+                        <h2>Entrepreneurs you follow</h2>
+                    </div>
                     <div t-foreach="companies" t-as="company" class="alert alert-info mt20">
                         <!-- <form role="form" > -->
                         <form></form>
@@ -98,11 +99,11 @@
                             <input type="hidden" name="user_id" t-att-value="company.user_id"/>
                             <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Sell Results</button>
                         </form>
-                        <form role="form" action="/aspire360measures/follow_entrepreneur">   
+                        <!-- <form role="form" action="/aspire360measures/follow_entrepreneur">   
                             <input type="hidden" name="user_id" t-att-value="company.user_id"/>
                             <input type="hidden" name="companies_list" t-att-value="companies"/>
                             <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Follow</button>
-                        </form>
+                        </form> -->
                         <form role="form" action="/aspire360measures/contact_entrepreneur">
                             <input type="hidden" name="user_id" t-att-value="company.user_id" />
                             <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Contact</button>
@@ -137,8 +138,9 @@
                     </div>
 
 
-
-                    <h2>Search for entrepreneurs/companies</h2>
+                    <div style="margin-top:5rem; margin-botton:5rem">
+                        <h2>Search for entrepreneurs/companies</h2>
+                    </div>
                     <form role="form" action="/aspire360measures/search" method="POST">
                         <input type="hidden" name="company_info" t-att-value="request.csrf_token()" />
                         <div class="form-group">
@@ -575,6 +577,7 @@
                         </div>
                         <br/>
                         <br/> -->
+                    <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo"/>
                     <br />
                     <div>
                         <h1>Search Results</h1>
