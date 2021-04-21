@@ -230,7 +230,7 @@ class Aspire360(http.Controller):
         # print("company industry: ", kw["company_industry"])
         # print("company employee: ", kw["company_employees"])
         # print("company funding: ", kw["company_funding_stage"])
-        return http.request.render('aspire360_measures.e_index')
+        return http.request.redirect('/aspire360measures')
     
     @http.route('/aspire360measures/search', auth='public',website=True, csrf=False)
     def search(self, **kw):
@@ -355,6 +355,7 @@ class Aspire360(http.Controller):
         objectives = http.request.env['aspire360.dailyobjectives']
         objective_text = kw['new_objective']
         if objective_text:
+            print("Inserting new objective:", objective_text)
             new_record = {'objective_text': objective_text,
                         'e_id':request.env.context.get ('uid'),
                         'objective_status' : False}

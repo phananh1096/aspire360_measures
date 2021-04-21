@@ -184,6 +184,57 @@ class WebsiteEntrepreneurTests(HttpCase, TransactionCase):
         self.url_open(url)
         after_num_surveys = len(self.env['survey.user_input'].search([]))
         self.assertEqual(prev_num_surveys+1,after_num_surveys)
+    
+    @tagged('-standard', 'aspire360')
+    def test_controller_entrepreneur_add_objective(self):
+        self.authenticate("admin","admin")
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + "/aspire360measures/add_objective"
+        test_obj = "Test_objective"
+        data = {
+            "new_objective": test_obj
+        }
+        print("About to open url:")
+        self.url_open(url, data=data)
+        print("Finished opening url")
+        objectives = http.request.env['aspire360.dailyobjectives'].search([('e_id', '=', request.env.context.get ('uid'))])
+        print("Successfully added new objective!")
+        self.assertTrue(True)
+    
+    @tagged('-standard', 'aspire360')
+    def test_controller_entrepreneur_update_objective(self):
+        # Test updating and removing objective. new_obj and old_len should be equal at end
+        self.authenticate("admin","admin")
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + "/aspire360measures/add_objective"
+        objectives = http.request.env['aspire360.dailyobjectives'].search([('e_id', '=', request.env.context.get ('uid'))])
+        init_obj = len(objectives)
+        test_obj = "Test_objective"
+        data = {
+            "new_objective": "Test_objective",
+        }
+        print("About to open url:")
+        self.url_open(url, data=data)
+        print("Finished opening url")
+        objectives = http.request.env['aspire360.dailyobjectives'].search([('e_id', '=', request.env.context.get ('uid'))])
+        old_len = len(objectives)
+        old_obj = list()
+        for obj in objectives:
+            old_obj.append(obj.objective_text)
+        new_data = {
+            "new_objective": None,
+            "Test_objective":"on",
+        }
+        print("About to open url:")
+        self.url_open(url, data=data)
+        print("Finished opening url")
+        objectives = http.request.env['aspire360.dailyobjectives'].search([('e_id', '=', request.env.context.get ('uid'))])
+        new_len = len(objectives)
+        new_obj = list()
+        for obj in objectives:
+            new_obj.append(obj.objective_text)
+        print("Old Objectives are:", old_obj)
+        print("New Objectives are:", new_obj)
+        self.assertEqual(new_len, old_len)
+        # self.assertTrue(True)
 
 """ --- VC Role --- """
 class WebsiteVentureCapitalistTests(HttpCase, TransactionCase):
@@ -272,7 +323,74 @@ class WebsiteVentureCapitalistTests(HttpCase, TransactionCase):
             "user_id": 2
         }
         self.assertTrue(self.url_open(url, data=data))
-
+    
+    # Test controller for follwoing an entrepreneur
+    @tagged('-standard', 'aspire360')
+    def test_controller_vc_follow_entrepreneur(self):
+        self.authenticate("phananh1096@gmail.com","testuser123")
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + "/aspire360measures/follow_entrepreneur"
+        entrepreneurs = self.env['aspire360.entrepreneurs'].search([])
+        if len(entrepreneurs) == 0:
+            self.assertTrue(True)
+        else:
+            entrepreneur = entrepreneurs[0]
+        data = {
+            "user_id": entrepreneur.user_id
+            # "comapnies": entrepreneurs
+        }
+        print("About to open url:")
+        #Case 1: Run to add entrepreneur for the first time with no current followed entrepreneurs
+        self.url_open(url, data=data)
+        #Case 2: Run again to check loop for entrepreneur already followed
+        self.url_open(url, data=data)
+        #Case 3: Run to check loop that follows a new entrepreneur after 1st follow
+        new_record = {'name':'Testing User', 'user_id':999999}
+        entrepreneurs.create(new_record)
+        new_data = {
+            "user_id": 999999
+        }
+        self.url_open(url, data=new_data)
+        print("Finished opening urls. Works!")
+        self.assertTrue(True)
+    
+    @tagged('-standard', 'aspire360')
+    def test_controller_vc_contact_entrepreneur(self):
+        self.authenticate("phananh1096@gmail.com","testuser123")
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + "/aspire360measures/contact_entrepreneur"
+        entrepreneurs = self.env['aspire360.entrepreneurs'].search([])
+        if len(entrepreneurs) == 0:
+            self.assertTrue(True)
+        else:
+            entrepreneur = entrepreneurs[0]
+        data = {
+            "user_id": entrepreneur.user_id
+            # "comapnies": entrepreneurs
+        }
+        print("About to open url:")
+        self.url_open(url, data=data)
+        print("Finished opening url")
+        self.assertTrue(True)
+    
+    @tagged('-standard', 'aspire360')
+    def test_controller_vc_send_reachout(self):
+        self.authenticate("phananh1096@gmail.com","testuser123")
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') + "/aspire360measures/send_message"
+        entrepreneurs = self.env['aspire360.entrepreneurs'].search([])
+        if len(entrepreneurs) == 0:
+            self.assertTrue(True)
+        else:
+            entrepreneur = entrepreneurs[0]
+        data = {
+            "user_id": entrepreneur.user_id,
+            "message_subject": "Test Reachout",
+            "message_content": "Test Content"
+            # "comapnies": entrepreneurs
+        }
+        print("About to open url:")
+        self.url_open(url, data=data)
+        print("Finished opening url")
+        self.assertTrue(True)
+    
     # # # FAIL TEST TO GET ODOO TO SHOW NUMBER OF TESTS PASSED
     # @tagged('-standard', 'aspire360')
     # def fail_test(self):

@@ -47,17 +47,17 @@ class Entrepreneurs(models.Model):
     def create(self, vals):
         return super(Entrepreneurs, self).create(vals)
 
-    @api.model
-    def send_email(self):
-        post_vars = {'subject': "Message subject",
-        'body': "Message body",
-        'partner_ids': [(4, 8)],} # Where "4" adds the ID to the list 
-                                # of followers and "3" is the partner ID 
-        notification_ids = []
-        notification_ids.append((0,0,{
-            'res_partner_id':8,
-            'notification_type':'inbox'}))
-        self.message_post(body='This receipt has been validated!', message_type='notification', subtype='mail.mt_comment', author_id='self.env.user.partner_id.id', notification_ids=notification_ids)
+    # @api.model
+    # def send_email(self):
+    #     post_vars = {'subject': "Message subject",
+    #     'body': "Message body",
+    #     'partner_ids': [(4, 8)],} # Where "4" adds the ID to the list 
+    #                             # of followers and "3" is the partner ID 
+    #     notification_ids = []
+    #     notification_ids.append((0,0,{
+    #         'res_partner_id':8,
+    #         'notification_type':'inbox'}))
+    #     self.message_post(body='This receipt has been validated!', message_type='notification', subtype='mail.mt_comment', author_id='self.env.user.partner_id.id', notification_ids=notification_ids)
     
     # Add a survey associated with Entrepreneur
     def edit_profile(self, kw, entrepreneur_id):
