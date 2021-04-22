@@ -1,63 +1,423 @@
 <odoo>
-        <template id="e_index">
-            <title>Aspire360Measures</title>
-            <t t-call="website.layout">
-                <t t-set="title">Aspire360Measures</t>
-                <div class="oe_structure">
-                    <div class="container">
-                        <h1>Home Dashboard</h1>
-                        <form role="form" action="/aspire360measures/entrepreneur_edit_profile">
-                            <div class="clearfix oe_login_buttons">
-                                <button type="submit" class="btn btn-primary pull-left">Edit Profile</button>
+    <template id="e_index">
+        <title>Aspire360Measures</title>
+        <t t-call="website.layout">
+            <t t-set="title">Aspire360Measures</t>
+            <div class="oe_structure">
+                <div class="container">
+                    <div style="width: 100%;">
+                        <div class="col-8" style="font-family: Poppins; font-style: normal; font-weight: bold; text-align: left;">
+                            <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo" />
+                            <h1 id="setup_title">Welcome Back, <t t-esc = "entrepreneur.name"/>!</h1>
+                        </div>
+                        <div style="margin-left: 88%; height: 100px;">
+                            <p style="color:grey;">
+                                <script> document.write(new Date().toLocaleDateString()); </script>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-left" style="margin-bottom:1rem; margin-left:2rem">
+                        <div class="card" style="width: 25rem; height: 20rem;margin-right: 1rem;">
+                            <div class="card-body">
+                                <img src="/aspire360_measures/static/src/img/fundraise_logo.png" width = "20%" style="width: 50%" class="card-img-top" alt="..." />
+                                <h4 class="card-title">Readiness to FUNDRAISE</h4>
+                                <a t-attf-href="/aspire360measures/survey/fundraise" class="btn btn-primary stretched-link">Start Assessment</a>
                             </div>
-                        </form>
-                        <p><a t-attf-href="/aspire360measures/survey/fundraise">
-                            Take the Readiness to Fundraise Survey</a>
-                        </p>
-                        <p><a t-attf-href="/aspire360measures/survey/sell">
-                            Take the Readiness to Sell Survey</a>
-                        </p>
+                        </div>
+                    
+                        <div class="card" style="width: 25rem; height: 20rem;">
+                            <div class="card-body">
+                                <img src="/aspire360_measures/static/src/img/sell_icon.png" width = "20%" style="width: 50%" class="card-img-top" alt="..." />
+                                <h4 class="card-title">Readiness to SELL</h4>
+                                <a t-attf-href="/aspire360measures/survey/sell" class="btn btn-primary stretched-link">Start Assessment</a>
+                            </div>
+                        </div>
+                        <div style="margin-left: 8.5%; height: 100px;float: left;">
+                            <form role="form" action="/aspire360measures/entrepreneur_edit_profile">
+                                <div class="clearfix oe_login_buttons">
+                                    <button type="submit" class="btn btn-primary pull-left" style="background-color: Transparent;background-repeat:no-repeat;border: none;cursor:pointer;overflow: hidden;outline:none;color:grey">Edit Profile</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row justify-content-left" style="margin-bottom:1rem; margin-left:2rem">
+                        <div class="card" style="width: 25rem; height: 20rem;">
+                            <div class="card-body">
+                                <h4 class="card-title">Daily Objectives</h4>
+                                <div t-if="len(objectives)==0"><p>You don't have any goals yet. Add some goals!</p></div>
+                                <div t-if="len(objectives)!=0"><p>You have <t t-esc="len(objectives)"/> goals left today!</p></div>
+
+                                <form role="form" action="/aspire360measures/add_objective">   
+                                <div t-foreach="objectives" t-as="objective">
+                                        <!-- <input type="checkbox" id="objective.objective_text" name="objective.objective_text" checked="objective.objective_status"/> -->
+                                        <!-- <label for="objective.objective_text"> -->
+                                            <!-- <t t-esc = "objective.objective_text" /> -->
+                                        <!-- </label> -->
+                                        <t t-esc = "objective.objective_text" />
+                                </div>
+
+                                <div>
+                                   <input type="text" name="new_objective" t-att-value="new_objective" placeholder="Add a new objective..."/>
+                                </div>
+                                <div>   
+                                   <button type="submit" class="btn btn-primary clearfix oe_login_buttons">Update Objectives</button>
+                                </div>
+                               </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </t>
-        </template>
+            </div>
+        </t>
+    </template>
 
-        <template id="v_index">
-            <title>Aspire360Measures</title>
-            <t t-call="website.layout">
-                <t t-set="title">Aspire360Measures</t>
+    <template id="v_index">
+        <title>Aspire360Measures</title>
+        <t t-call="website.layout">
+            <t t-set="title">Aspire360Measures</t>
+            <div class="oe_structure">
+                <div class="container">
+                    <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo"/>
+                    <h1>Investor Homepage</h1>
+                    <!-- <p> -->
+                        <!-- <a t-attf-href="/aspire360measures/email">
+                            Email Entrepreneurs</a> -->
+                    <!-- </p> -->
+
+                    <div style="margin-top:5rem; margin-botton:5rem">
+                        <h2>Entrepreneurs you follow</h2>
+                    </div>
+                    <div t-foreach="companies" t-as="company" class="alert alert-info mt20">
+                        <!-- <form role="form" > -->
+                        <form></form>
+                        <form role="form" action="/aspire360measures/display_fundraise">   
+                            <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Fundraising Results</button>
+                        </form>
+                        <form role="form" action="/aspire360measures/display_sell">   
+                            <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Sell Results</button>
+                        </form>
+                        <!-- <form role="form" action="/aspire360measures/follow_entrepreneur">   
+                            <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                            <input type="hidden" name="companies_list" t-att-value="companies"/>
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Follow</button>
+                        </form> -->
+                        <form role="form" action="/aspire360measures/contact_entrepreneur">
+                            <input type="hidden" name="user_id" t-att-value="company.user_id" />
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Contact</button>
+                        </form>
+                        <p>
+                            <h2 t-esc = "company.company_name" />
+                        </p>
+                        <p>
+                            <a>Founder: </a>
+                            <a t-esc = "company.name" />
+                        </p>
+                        <p>
+                            <a>Industry: </a>
+                            <a t-esc = "company.company_industry" />
+                        </p>
+                        <p>
+                            <a>Funding: </a>
+                            <a t-esc = "company.company_funding" />
+                        </p>
+                        <p>
+                            <a>Size: </a>
+                            <a t-esc = "company.company_size" />
+                        </p>
+                            <!-- <t t-esc = "company.name" />
+                            <t t-esc = "company.user_id" />  -->
+                            <!-- <div class="clearfix oe_login_buttons"> -->
+
+                            <!-- </div> -->
+                        <!-- </form> -->
+                        <!-- <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
+                        <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p> -->
+                    </div>
+
+
+                    <div style="margin-top:5rem; margin-botton:5rem">
+                        <h2>Search for entrepreneurs/companies</h2>
+                    </div>
+                    <form role="form" action="/aspire360measures/search" method="POST">
+                        <input type="hidden" name="company_info" t-att-value="request.csrf_token()" />
+                        <div class="form-group">
+                            <label for="company_name" class="control-label">Company Name </label>
+                            <input type="text" name="company_name" id="patient_name" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="company_industry">Please select the industry that your company belongs to:</label>
+                            <select id="company_industry" name="industry">
+                                <option value="All">All</option>
+                                <option value="Administrative Services">Administrative Services</option>
+                                <option value="Advertising">Advertising</option>
+                                <option value="Agriculture and Farming">Agriculture and Farming</option>
+                                <option value="Artificial Intelligence">Artificial Intelligence</option>
+                                <option value="Biotechnology">Biotechnology</option>
+                                <option value="Clothing and Apparel">Clothing and Apparel</option>
+                                <option value="Commerce and Shopping">Commerce and Shopping</option>
+                                <option value="Consumer Electronics">Consumer Electronics</option>
+                                <option value="Consumer Goods">Consumer Goods</option>
+                                <option value="Content and Publishing">Content and Publishing</option>
+                                <option value="Data and Analytics">Data and Analytics</option>
+                                <option value="Design">Design</option>
+                                <option value="Education">Education</option>
+                                <option value="Energy">Energy</option>
+                                <option value="Financial Services">Financial Services</option>
+                                <option value="Food and Beverage">Food and Beverage</option>
+                                <option value="Gaming">Gaming</option>
+                                <option value="Government and Military">Government and Military</option>
+                                <option value="Hardware">Hardware</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Information Technology">Information Technology</option>
+                                <option value="Manufacturing">Manufacturing</option>
+                                <option value="Media and Entertainment">Media and Entertainment</option>
+                                <option value="Navigation and Mapping">Navigation and Mapping</option>
+                                <option value="Others">Others</option>
+                                <option value="Payments">Payments</option>
+                                <option value="Platforms">Platforms</option>
+                                <option value="Privacy and Security">Privacy and Security</option>
+                                <option value="Professional Services">Professional Services</option>
+                                <option value="Real Estate">Real Estate</option>
+                                <option value="Sales and Marketing">Sales and Marketing</option>
+                                <option value="Science and Engineering">Science and Engineering</option>
+                                <option value="Software">Software</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Sustainability">Sustainability</option>
+                                <option value="Telecommunications">Telecommunications</option>
+                                <option value="Transportation">Transportation</option>
+                                <option value="Travel and Tourism">Travel and Tourism</option>
+                                <option value="Video">Video</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="company_employees">Please indicate your company size:</label>
+                            <select id="company_employees" name="employees">
+                                <option value="All">All</option>
+                                <option value="1-10 employees">1-10 employees</option>
+                                <option value="11-50 employees">11-50 employees</option>
+                                <option value="51-200 employees">51-200 employees</option>
+                                <option value="200+ employees">200+ employees</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="company_funding_stage">Please indicate what funding stage your company is in:</label>
+                            <select id="company_funding_stage" name="funding_stage">
+                                <option value="All">All</option>
+                                <option value="Pre-seed">Pre-seed</option>
+                                <option value="Seed">Seed</option>
+                                <option value="Stage A">Stage A</option>
+                                <option value="Stage B">Stage B</option>
+                                <option value="Stage C">Stage C</option>
+                                <option value="Stage D/E/Others">Stage D/E/Others</option>
+                            </select>
+                        </div>
+                        <div class="clearfix oe_login_buttons">
+                            <button type="submit" class="btn btn-primary pull-left">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="email_form" name="Contact Entrepreneur">
+        <t t-call="website.layout">
+            <div id="wrap">
                 <div class="oe_structure">
                     <div class="container">
-                        <h1>Investor Homepage</h1>
-                        <p><a t-attf-href="/aspire360measures/email">
-                            Email Entrepreneurs</a>
-                        </p>
-                        <h2>Search for entrepreneurs/companies</h2>
-                        <form role="form" action="/aspire360measures/search" method="POST">
-                            <input type="hidden" name="company_info" t-att-value="request.csrf_token()"/>
+                        <h1>Entrepreneur Homepage</h1>
+                        <form role="form" action="/aspire360measures/entrepreneur_edit_profile">
+                            <div class="clearfix oe_login_buttons">
+                                <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="setup">
+        <title>Aspire360Measures</title>
+        <t t-call="website.layout">
+            <t t-set="title">Aspire360Measures</t>
+            <div class="oe_structure">
+                <div class="container">
+                    <h1>Are you an Entrepreneur or an Investor?</h1>
+                    <p>
+                        <a t-attf-href="/aspire360measures/setup/e">
+                            Entrepreneur/CEO</a>
+                    </p>
+                    <p>
+                        <a t-attf-href="/aspire360measures/setup/v">
+                            Investor</a>
+                    </p>
+                </div>
+            </div>
+        </t>
+    </template>
+
+ 
+
+    <template id="email_form" name="Email Entrepreneur">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+                    <div class="container">
+                        <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo" />
+                        <div class="row justify-content-center" style="margin-top:2rem; margin-bottom:2rem;">
+                            <div class="col-8" style="font-family: Poppins; font-style: normal; font-weight: bold; text-align: center;">
+                                <h1 id="setup_title">Founder Contact Form</h1>
+                            </div>
+                        </div>
+                        <form role="form" action="/aspire360measures/submit_email" method="POST">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="email_recipient">To</label>
+                                    <input type="text" name="email_recipient" class="form-control" id="email_recipient" placeholder="Recipient Email" required="required" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="email_sender" class="control-label">From</label>
+                                    <input type="text" name="email_sender" class="form-control" id="email_sender" placeholder="Sender Email" required="required" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="email_content" class="control-label">Email Template to use</label>
+                                    <select id="email_content" name="email_template" class="form-control">
+                                        <option value="Introduction">Introduction</option>
+                                        <option value="Follow-up">Follow-up</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email_subject" class="control-label">Subject</label>
+                                <textarea class="form-control" name="email_subject" id="email_subject" rows="5" required="required"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </form>
+                        <!-- >>>>>>>>>>>>>> -->
+                        <!-- <form role="form" action="/aspire360measures/submit_email" method="POST">
+                                <div class="form-group">
+                                    <label for="email_recipient" class="control-label">Recipient</label>
+                                    <input type="text" name="email_recipient" id="email_recipient" class ="form-control" required="required"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email_sender" class="control-label">From</label>
+                                    <input type="text" name="email_sender" id="email_sender" class ="form-control" required="required"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email_subject" class="control-label">Subject</label>
+                                    <input type="text" name="email_subject" id="email_subject" class ="form-control" required="required"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email_content" class="control-label">Please select the email template</label>
+                                    <select id="email_content" name="email_template">
+                                        <option value="Introduction">Introduction</option>
+                                        <option value="Follow-up">Follow-up</option>
+                                    </select>
+                                </div>
+                                <div class="clearfix oe_login_buttons">
+                                    <button type="submit" class="btn btn-primary pull-left">Send</button>
+                                </div>
+                            </form> -->
+                        <!-- >>>>>>>>>>>>>> -->
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+        
+    <template id="setup">
+        <xpath expr=".">
+            <!-- <script type="text/javascript" src="/aspire360_measures/static/src/js/test.js"/> -->
+            <link href = "/aspire360_measures/static/src/css/styling.scss" rel = "stylesheet" type = "text/css" />
+        </xpath>
+        <title>Aspire360Measures</title>
+        <t t-call="website.layout">
+            <t t-set="title">Aspire360Measures</t>
+            <div class="oe_structure">
+                <div class="container">
+                    <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo"/>
+                    <div class="row justify-content-center" style="margin-top:2rem;" > 
+                        <div class="col-8" style="font-family: Poppins; font-style: normal; font-weight: bold; text-align: center;">
+                            <h1 id="setup_title">Are you a Founder or an Investor?</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center" style="margin-top:2rem;">
+                    <div class="col-4">
+                        <div class="card" style="width: 18rem; height: 35rem;">
+                            <img src="/aspire360_measures/static/src/img/setup_founder_logo.png" style="padding-top: 2rem;" class="card-img-top" alt="..." />
+                            <div class="card-body">
+                                <h4 class="card-title">Founder</h4>
+                                <p class="card-text">I am looking to or have already founded a company and I am currently looking for investors for my company.</p>
+                                <a t-attf-href="/aspire360measures/setup/e" class="btn btn-primary stretched-link">Select</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card" style="width: 18rem; height: 35rem;">
+                            <img src="/aspire360_measures/static/src/img/setup_vc_logo.png" style="padding-top: 1rem;" class="card-img-top" alt="..." />
+                            <div class="card-body">
+                                <h4 class="card-title">Investor</h4>
+                                <p class="card-text">I am an investor currently seeking for early-stage companies to invest in. I will be assessing companies based on fundraising and sell metrics</p>
+                                <a t-attf-href="/aspire360measures/setup/v" class="btn btn-primary stretched-link">Select</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <p><a t-attf-href="/aspire360measures/setup/e">
+                        Entrepreneur/CEO</a>
+                    </p>
+                    <p><a t-attf-href="/aspire360measures/setup/v">
+                        Investor</a>
+                    </p> -->
+            </div>
+        </t>
+    </template>
+
+    <template id="entrepreneur_edit_profile" name="Company Details">
+        <xpath expr=".">
+            <!-- <script type="text/javascript" src="/aspire360_measures/static/src/js/test.js"/> -->
+            <!-- <link href = "/aspire360_measures/static/src/css/styling.css" rel = "stylesheet" type = "text/css" /> -->
+        </xpath>
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+                    <div class="container">
+                    <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo" />
+                        <!-- <div>
+                                <h1>test text</h1>
+                            </div> -->
+                        <form role="form" action="/aspire360measures/submit_info" method="POST">
+                            <input type="hidden" name="company_info" t-att-value="request.csrf_token()" />
                             <div class="form-group">
                                 <label for="company_name" class="control-label">Company Name </label>
-                                <input type="text" name="company_name" id="patient_name" class ="form-control"/>
+                                <input type="text" name="company_name" id="patient_name" class="form-control" />
                             </div>
                             <div class="form-group">
                                 <label for="company_industry">Please select the industry that your company belongs to:</label>
                                 <select id="company_industry" name="industry">
-                                    <option value="All">All</option>
                                     <option value="Administrative Services">Administrative Services</option>
                                     <option value="Advertising">Advertising</option>
                                     <option value="Agriculture and Farming">Agriculture and Farming</option>
-                                    <option value="Artificial Intelligence">Artificial Intelligence</option> 
-                                    <option value="Biotechnology">Biotechnology</option> 
-                                    <option value="Clothing and Apparel">Clothing and Apparel</option>  
-                                    <option value="Commerce and Shopping">Commerce and Shopping</option>  
+                                    <option value="Artificial Intelligence">Artificial Intelligence</option>
+                                    <option value="Biotechnology">Biotechnology</option>
+                                    <option value="Clothing and Apparel">Clothing and Apparel</option>
+                                    <option value="Commerce and Shopping">Commerce and Shopping</option>
                                     <option value="Consumer Electronics">Consumer Electronics</option>
-                                    <option value="Consumer Goods">Consumer Goods</option>  
-                                    <option value="Content and Publishing">Content and Publishing</option>  
-                                    <option value="Data and Analytics">Data and Analytics</option> 
-                                    <option value="Design">Design</option> 
-                                    <option value="Education">Education</option>  
-                                    <option value="Energy">Energy</option> 
-                                    <option value="Financial Services">Financial Services</option>     
+                                    <option value="Consumer Goods">Consumer Goods</option>
+                                    <option value="Content and Publishing">Content and Publishing</option>
+                                    <option value="Data and Analytics">Data and Analytics</option>
+                                    <option value="Design">Design</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Energy">Energy</option>
+                                    <option value="Financial Services">Financial Services</option>
                                     <option value="Food and Beverage">Food and Beverage</option>
                                     <option value="Gaming">Gaming</option>
                                     <option value="Government and Military">Government and Military</option>
@@ -87,7 +447,6 @@
                             <div class="form-group">
                                 <label for="company_employees">Please indicate your company size:</label>
                                 <select id="company_employees" name="employees">
-                                    <option value="All">All</option>
                                     <option value="1-10 employees">1-10 employees</option>
                                     <option value="11-50 employees">11-50 employees</option>
                                     <option value="51-200 employees">51-200 employees</option>
@@ -97,7 +456,6 @@
                             <div class="form-group">
                                 <label for="company_funding_stage">Please indicate what funding stage your company is in:</label>
                                 <select id="company_funding_stage" name="funding_stage">
-                                    <option value="All">All</option>
                                     <option value="Pre-seed">Pre-seed</option>
                                     <option value="Seed">Seed</option>
                                     <option value="Stage A">Stage A</option>
@@ -107,217 +465,86 @@
                                 </select>
                             </div>
                             <div class="clearfix oe_login_buttons">
-                                <button type="submit" class="btn btn-primary pull-left">Search</button>
+                                <button type="submit" class="btn btn-primary pull-left">Submit</button>
                             </div>
                         </form>
                     </div>
                 </div>
-            </t>
-        </template>
-            
-        <template id="email_form" name="Contact Entrepreneur">
-            <t t-call="website.layout">
-                <div id="wrap">
-                    <div class="oe_structure">
-                        <div class="container">
-                            <form role="form" action="/aspire360measures/submit_email" method="POST">
-                                <div class="form-group">
-                                    <label for="email_recipient" class="control-label">Recipient</label>
-                                    <input type="text" name="email_recipient" id="email_recipient" class ="form-control" required="required"/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email_sender" class="control-label">From</label>
-                                    <input type="text" name="email_sender" id="email_sender" class ="form-control" required="required"/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email_subject" class="control-label">Subject</label>
-                                    <input type="text" name="email_subject" id="email_subject" class ="form-control" required="required"/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email_content" class="control-label">Please select the email template</label>
-                                    <select id="email_content" name="email_template">
-                                        <option value="Introduction">Introduction</option>
-                                        <option value="Follow-up">Follow-up</option>
-                                    </select>
-                                </div>
-                                <div class="clearfix oe_login_buttons">
-                                    <button type="submit" class="btn btn-primary pull-left">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </t>
-        </template>
-        
-        <template id="setup">
-            <title>Aspire360Measures</title>
-            <t t-call="website.layout">
-                <t t-set="title">Aspire360Measures</t>
-                <div class="oe_structure">
-                    <div class="container">
-                        <h1>Are you an Entrepreneur or an Investor?</h1>
-                        <p><a t-attf-href="/aspire360measures/setup/e">
-                            Entrepreneur/CEO</a>
-                        </p>
-                        <p><a t-attf-href="/aspire360measures/setup/v">
-                            Investor</a>
-                        </p>
-                    </div>
-                </div>
-            </t>
-        </template>
-
-        <template id="entrepreneur_edit_profile" name="Company Details" >
-            <xpath expr=".">
-                <!-- <script type="text/javascript" src="/aspire360_measures/static/src/js/test.js"/> -->
-                <!-- <link href = "/aspire360_measures/static/src/css/styling.css" rel = "stylesheet" type = "text/css" /> -->
-            </xpath>
-            <t t-call="website.layout">
-                <div id="wrap">
-                    <div class="oe_structure">
-                        <div class="container">
-                            <!-- <div>
-                                <h1>test text</h1>
-                            </div> -->
-                            <form role="form" action="/aspire360measures/submit_info" method="POST">
-                                <input type="hidden" name="company_info" t-att-value="request.csrf_token()"/>
-                                <div class="form-group">
-                                    <label for="company_name" class="control-label">Company Name </label>
-                                    <input type="text" name="company_name" id="patient_name" class ="form-control"/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="company_industry">Please select the industry that your company belongs to:</label>
-                                    <select id="company_industry" name="industry">
-                                        <option value="Administrative Services">Administrative Services</option>
-                                        <option value="Advertising">Advertising</option>
-                                        <option value="Agriculture and Farming">Agriculture and Farming</option>
-                                        <option value="Artificial Intelligence">Artificial Intelligence</option> 
-                                        <option value="Biotechnology">Biotechnology</option> 
-                                        <option value="Clothing and Apparel">Clothing and Apparel</option>  
-                                        <option value="Commerce and Shopping">Commerce and Shopping</option>  
-                                        <option value="Consumer Electronics">Consumer Electronics</option>
-                                        <option value="Consumer Goods">Consumer Goods</option>  
-                                        <option value="Content and Publishing">Content and Publishing</option>  
-                                        <option value="Data and Analytics">Data and Analytics</option> 
-                                        <option value="Design">Design</option> 
-                                        <option value="Education">Education</option>  
-                                        <option value="Energy">Energy</option> 
-                                        <option value="Financial Services">Financial Services</option>     
-                                        <option value="Food and Beverage">Food and Beverage</option>
-                                        <option value="Gaming">Gaming</option>
-                                        <option value="Government and Military">Government and Military</option>
-                                        <option value="Hardware">Hardware</option>
-                                        <option value="Healthcare">Healthcare</option>
-                                        <option value="Information Technology">Information Technology</option>
-                                        <option value="Manufacturing">Manufacturing</option>
-                                        <option value="Media and Entertainment">Media and Entertainment</option>
-                                        <option value="Navigation and Mapping">Navigation and Mapping</option>
-                                        <option value="Others">Others</option>
-                                        <option value="Payments">Payments</option>
-                                        <option value="Platforms">Platforms</option>
-                                        <option value="Privacy and Security">Privacy and Security</option>
-                                        <option value="Professional Services">Professional Services</option>
-                                        <option value="Real Estate">Real Estate</option>
-                                        <option value="Sales and Marketing">Sales and Marketing</option>
-                                        <option value="Science and Engineering">Science and Engineering</option>
-                                        <option value="Software">Software</option>
-                                        <option value="Sports">Sports</option>
-                                        <option value="Sustainability">Sustainability</option>
-                                        <option value="Telecommunications">Telecommunications</option>
-                                        <option value="Transportation">Transportation</option>
-                                        <option value="Travel and Tourism">Travel and Tourism</option>
-                                        <option value="Video">Video</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="company_employees">Please indicate your company size:</label>
-                                    <select id="company_employees" name="employees">
-                                        <option value="1-10 employees">1-10 employees</option>
-                                        <option value="11-50 employees">11-50 employees</option>
-                                        <option value="51-200 employees">51-200 employees</option>
-                                        <option value="200+ employees">200+ employees</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="company_funding_stage">Please indicate what funding stage your company is in:</label>
-                                    <select id="company_funding_stage" name="funding_stage">
-                                        <option value="Pre-seed">Pre-seed</option>
-                                        <option value="Seed">Seed</option>
-                                        <option value="Stage A">Stage A</option>
-                                        <option value="Stage B">Stage B</option>
-                                        <option value="Stage C">Stage C</option>
-                                        <option value="Stage D/E/Others">Stage D/E/Others</option>
-                                    </select>
-                                </div>
-                                <div class="clearfix oe_login_buttons">
-                                    <button type="submit" class="btn btn-primary pull-left">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </t>
-        </template>
+            </div>
+        </t>
+    </template>
 
 
-        <template id="search">
-            <t t-call="website.layout">
-                <t t-set="title">Search Results</t>
-                <div class="oe_structure"/>
-                <div class="oe_structure">
-                    <div class="container">
-                        <!-- <div>
+    <template id="search">
+        <t t-call="website.layout">
+            <t t-set="title">Search Results</t>
+            <div class="oe_structure" />
+            <div class="oe_structure">
+                <div class="container">
+                    <!-- <div>
                             <form role="form" action="/aspire360measures">
                                 <button type="submit" class="btn btn-primary pull-left clearfix oe_login_buttons">Back</button>
                             </form>
                         </div>
                         <br/>
                         <br/> -->
-                        <br/>
-                        <div>
-                            <h1>Search Results</h1>
-                        </div>
-                        <div t-if="len(companies)==0"><p>Sorry, no companies found..</p></div>
-                        <div t-foreach="companies" t-as="company" class="alert alert-info mt16">
-                            <!-- <form role="form" > -->
-                                <form role="form" action="/aspire360measures/display_fundraise">    
-                                    <input type="hidden" name="user_id" t-att-value="company.user_id"/>
-                                    <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Fundraising Results</button>
-                                </form>
-                                <form role="form" action="/aspire360measures/display_sell">    
-                                    <input type="hidden" name="user_id" t-att-value="company.user_id"/>
-                                    <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Sell Results</button>
-                                </form>
-                                <p>
-                                    <h2 t-esc = "company.company_name" /> 
-                                </p>
-                                <p>
-                                    <a>Founder: </a>
-                                    <a t-esc = "company.name" /> 
-                                </p>
-                                <p>
-                                    <a>Industry: </a>
-                                    <a t-esc = "company.company_industry" /> 
-                                </p>
-                                <p>
-                                    <a>Funding: </a>
-                                    <a t-esc = "company.company_funding" /> 
-                                </p>
-                                <p>
-                                    <a>Size: </a>
-                                    <a t-esc = "company.company_size" /> 
-                                </p>
-                                <!-- <t t-esc = "company.name" /> 
+                    <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo"/>
+                    <br />
+                    <div>
+                        <h1>Search Results</h1>
+                    </div>
+                    <div t-if="len(companies)==0">
+                        <p>Sorry, no companies found..</p>
+                    </div>
+                    <div t-foreach="companies" t-as="company" class="alert alert-info mt16">
+                        <!-- <form role="form" > -->
+                        <form role="form" action="/aspire360measures/display_fundraise">
+                            <input type="hidden" name="user_id" t-att-value="company.user_id" />
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Fundraising Results</button>
+                        </form>
+                        <form role="form" action="/aspire360measures/display_sell">
+                            <input type="hidden" name="user_id" t-att-value="company.user_id" />
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Latest Sell Results</button>
+                        </form>
+                        <form role="form" action="/aspire360measures/follow_entrepreneur">   
+                            <input type="hidden" name="user_id" t-att-value="company.user_id"/>
+                            <input type="hidden" name="companies_list" t-att-value="companies"/>
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Follow</button>
+                        </form>
+                        <form role="form" action="/aspire360measures/contact_entrepreneur">
+                            <input type="hidden" name="user_id" t-att-value="company.user_id" />
+                            <button type="submit" class="btn btn-primary pull-right clearfix oe_login_buttons">Contact</button>
+                        </form>
+                        <p>
+                            <h2 t-esc="company.company_name" />
+                        </p>
+                        <p>
+                            <a>Founder: </a>
+                            <a t-esc="company.name" />
+                        </p>
+                        <p>
+                            <a>Industry: </a>
+                            <a t-esc="company.company_industry" />
+                        </p>
+                        <p>
+                            <a>Funding: </a>
+                            <a t-esc="company.company_funding" />
+                        </p>
+                        <p>
+                            <a>Size: </a>
+                            <a t-esc="company.company_size" />
+                        </p>
+                        
+                        <!-- <t t-esc = "company.name" /> 
                                 <t t-esc = "company.user_id" />  -->
-                                <!-- <div class="clearfix oe_login_buttons"> -->
+                        <!-- <div class="clearfix oe_login_buttons"> -->
 
-                                <!-- </div> -->
-                            <!-- </form> -->
-                            <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
-                            <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p>
-                        </div>
-                        <!-- <h3 t-field="person.name"/>
+                        <!-- </div> -->
+                        <!-- </form> -->
+                        <!-- <a>[TO BE UPDATED] This user last took the Fundraising Assessment on 3/20</a>
+                        <p>[TO BE UPDATED] This user has not taken the Sell Assessment</p> -->
+                    </div>
+                    <!-- <h3 t-field="person.name"/>
                         <p>Last modified: <i t-field="person.write_date" t-options='{"widget": "relative"}'/></p>
                         <div t-field="person.biography"/>
                         <div class="col-md-7 col-sm-8">
@@ -337,31 +564,91 @@
                                 <label for="button-5">5 - Love it</label>
                             </form>
                         </div> -->
-                    </div>
                 </div>
-                <div class="oe_structure"/>
-            </t>
-        </template>
+            </div>
+            <div class="oe_structure" />
+        </t>
+    </template>
 
-        <template id="survey_error">
-            <title>Aspire360Measures</title>
-            <t t-call="website.layout">
-                <t t-set="title">Error, no survey results found</t>
+    <template id="survey_error">
+        <title>Aspire360Measures</title>
+        <t t-call="website.layout">
+            <t t-set="title">Error, no survey results found</t>
+            <div class="oe_structure">
+                <div class="container">
+                    <h3>Sorry, this company has not completed this survey yet..</h3>
+                    <br />
+                    <form role="form" action="/aspire360measures/search">
+                        <button type="submit" class="btn btn-primary pull-bottom clearfix oe_login_buttons">Back</button>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="contact_form" name="Contact Entrepreneur ">
+        <xpath expr=".">
+            <!-- <script type="text/javascript" src="/aspire360_measures/static/src/js/test.js"/> -->
+            <link href="/aspire360_measures/static/src/css/styling.scss" rel="stylesheet" type="text/css" />
+        </xpath>
+        <t t-call="website.layout">
+            <div id="wrap">
                 <div class="oe_structure">
                     <div class="container">
-                        <h3>Sorry, this company has not completed this survey yet..</h3>
-                        <br/>
-                        <form role="form" action="/aspire360measures/search">    
-                            <button type="submit" class="btn btn-primary pull-bottom clearfix oe_login_buttons">Back</button>
+                        <img src="/aspire360_measures/static/src/img/aspire360.png" style="margin-top:1rem; max-width: 15%; max-height: 15%;" class="w3-circle" id="aspire360_logo" />
+                        <div class="row justify-content-center" style="margin-top:2rem; margin-bottom:2rem;">
+                            <div class="col-8" style="font-family: Poppins; font-style: normal; font-weight: bold; text-align: center;">
+                                <h1 id="setup_title">Founder Contact Form</h1>
+                            </div>
+                        </div>
+                        <form role="form" action="/aspire360measures/send_message" method="POST">
+                            <input type="hidden" name="user_id" t-att-value="company_id" />
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="email_recipient">To</label>
+                                    <input type="text" name="email_recipient" class="form-control" id="email_recipient" t-att-value="to_name" placeholder="to_name" required="required" readonly="True" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="email_sender" class="control-label">From</label>
+                                    <input type="text" name="email_sender" class="form-control" id="email_sender" t-att-value="from_name" placeholder="from_name" required="required" readonly="True" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="message_subject" class="control-label">Message Subject</label>
+                                <input type="text" name="message_subject" id="message_subject" class="form-control" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <label for="message_content" class="control-label">Message Content</label>
+                                <textarea class="form-control" name="message_content" id="message_content" rows="5" required="required"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Send</button>
                         </form>
+                        <!-- >>>>>>>>>>>>>>>>>>>> -->
+                        <!-- <form role="form" action="/aspire360measures/send_message" method="POST">
+                                <input type="hidden" name="user_id" t-att-value="company_id"/>
+                                <div class="form-group">
+                                    <label for="message_subject" class="control-label">Subject:</label>
+                                    <input type="text" name="message_subject" id="message_subject" class ="form-field" required="required"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message_content" class="control-label">Message:</label>
+                                    <input type="text" name="message_content" id="message_content" class ="form-control" required="required"/>
+                                </div>
+                                <div class="clearfix oe_login_buttons">
+                                    <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                                </div>
+                            </form> -->
                     </div>
                 </div>
-            </t>
-        </template>
+            </div>
+        </t>
+    </template>
 
     <data>
         <!-- <function model="geo_subdivision.geo_subdivision" name="myfunction"/>  -->
-<!--
+        <!--
         <template id="listing">
           <ul>
             <li t-foreach="objects" t-as="object">

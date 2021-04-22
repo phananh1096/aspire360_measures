@@ -37,6 +37,8 @@
 
 - For iteration 2: We focussed on building features for investors during this iteration. We were able to implement search capabilities that allow investors to search for entrepreneurs and their companies based on sets of filters and company name search. We also implemented survey results retrieval capabilities so that companies that show up in a search will also present their latest survey metrics. Additionally, we experimented with a simple mailing feature that we will expand on for the final iteration in addition to upgrading the entrepreneur dashboards.
 
+- For final iteration: For our final iteration, we implemented additional features for entrepreneurs such as the ability to add objectives. For venture capitalists, we implemented a quick-following feature that would allow venture capitalists to effectively 'bookmark' and quickly access the most recent assessment metrics for their followed entrepreneurs. Lastly, we implemented integration with Odoo Discuss module where we enable venture capitalists to fill out a contact form to reach out to entrepreneurs. This will create a private channel where further conversations regarding coaching and funding can occur. 
+
 ## Download and Installation Instructions for TAs
 
 - As our product is a module built within Odoo, module setup would require installation of the original Odoo platform as well as setting up a PostgreSQL database.
@@ -131,4 +133,4 @@
 ## Hosting:
 + Odoo has known incompatibilities and difficulties with heroku hosting: https://stackoverflow.com/questions/25424018/can-i-deploy-openerp-on-heroku
 + Any custom workaround has not been maintained in the last 2-3 years. Current Aspire360 production version of Odoo is hosted on Amazon EC2, therefore, we followed the same structure for our hosting. 
-+ Our project is hosted on AWS EC2, which can be found here: http://ec2-54-159-131-216.compute-1.amazonaws.com:8069/web/login
++ Our project is hosted on AWS EC2, which can be found here: http://ec2-54-237-23-92.compute-1.amazonaws.com:8069/web/login

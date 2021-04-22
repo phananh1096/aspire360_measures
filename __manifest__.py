@@ -19,7 +19,8 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'survey', 'website'],
+    'depends': ['mail','base', 'survey', 'website'],
+    # 'depends': ['mail','base', 'survey', 'website', 'web_notify'],
 
     # always loaded
     'data': [
